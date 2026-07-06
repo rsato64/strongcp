@@ -1,0 +1,2595 @@
+\documentclass[11pt,a4paper]{article}
+%\usepackage{amsmath,amssymb,comment,url,hyperref,color,cite,physics}
+\usepackage{amsmath,amssymb,comment,url,color,cite,physics,slashed}
+\usepackage{jheppub_}
+\title{A Strong CP Primer}
+\author{Ryosuke Sato}
+\affiliation{Department of Physics, The University of Osaka, Toyonaka, Osaka 560-0043, Japan}
+\emailAdd{rsato@het.phys.sci.osaka-u.ac.jp}
+\abstract{
+The aim of this lecture is to understand the strong CP problem \cite{Jackiw:1976pf, Callan:1976je, Peccei:1977hh, Peccei:1977ur} and its possible solutions.
+Here I assume the students have basic knowledge of quantum field theory such as
+\begin{itemize}
+\item Symmetry and Noether current
+\item Spontaneous symmetry breaking and Nambu--Goldstone boson
+\item Chiral anomaly and Fujikawa method
+\item Lagrangian and matter content of the Standard Model
+\end{itemize}
+}
+\def\red#1{{\color{red} (#1)}}
+\begin{document}
+\maketitle
+%\tableofcontents
+
+\setcounter{section}{-1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Notation}
+Notation in this lecture note is the same as Peskin and Schroeder's textbook. The metric is mostly minus, $g_{\mu\nu} = {\rm diag}(1,-1,-1,-1)$. The Levi-Civita tensor is defined as $\epsilon^{0123} = -\epsilon_{0123} = 1$. We take the following representation of gamma matrices:
+\begin{align}
+    \gamma^0 = \begin{pmatrix} 0 & I_2 \\ I_2 & 0 \end{pmatrix},\quad
+    \gamma^i = \begin{pmatrix} 0 & \sigma^i \\ -\sigma^i & 0 \end{pmatrix}, \quad
+    \gamma^5 = i \gamma^0 \gamma^1 \gamma^2 \gamma^3 = \begin{pmatrix} -I_2 & 0 \\ 0 & I_2 \end{pmatrix}.
+\end{align}
+The projection operators are defined as
+\begin{align}
+    P_L = \frac{1}{2} (1 - \gamma^5), \qquad
+    P_R = \frac{1}{2} (1 + \gamma^5).
+\end{align}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Why is neutron electric dipole moment so small?}
+Interaction between a particle with nonzero spin and static electromagnetic field in the vacuum is described by the following effective Hamiltonian:
+\begin{align}
+H = -\mu \frac{\vec s \cdot \vec B}{|\vec s|}
+-d \frac{\vec s \cdot \vec E}{|\vec s|}, 
+\end{align}
+where $\vec s$ is the spin operator of the particle. The coefficient $\mu$ and $d$ are called magnetic dipole moment and electric dipole moment. Both of them have the same mass dimension, (charge) $\times$ (length).
+
+For the neutron, the observed value of $\mu_n$ is \cite{ParticleDataGroup:2024cfk}
+\begin{align}
+    \mu_n = -1.9 \times \frac{e\hbar}{2m_p} \simeq -2.0 \times 10^{-14}~e\,{\rm cm}.
+\end{align}
+On the other hand, the most precise measurement on $d_n$ is given by the PSI experiment as \cite{Abel:2020pzs}
+\begin{align}
+    d_n = (0.0 \pm 1.1_{\rm stat} \pm 0.2_{\rm sys}) \times 10^{-26}~e\,{\rm cm}.
+\end{align}
+This result can be interpreted as an upper bound on $d_n$ on 90 \% C.L.:
+\begin{align}
+    |d_n| < 1.8 \times 10^{-26}~e\,{\rm cm}. \label{eq:bound on neutron EDM}
+\end{align}
+%
+We can see that the ratio of two dipole moments $\mu_n$ and $d_n$ is bounded as
+\begin{align}
+\left|\frac{d_n}{\mu_n}\right| \lesssim 10^{-12}.
+\end{align}
+We can see that $d_n$ is quite suppressed compared to $\mu_n$. Why so small!?
+
+Smallness of $d_n$ could be explained by the existence of symmetry to forbid $d_n$.
+There are two natural candidates of such a symmetry:
+\begin{itemize}
+\item Parity symmetry ($P$) : $(t,\vec x) \to (t,-\vec x)$
+\item Time reversal symmetry ($T$) : $(t,\vec x) \to (-t,\vec x)$
+\end{itemize}
+The scalar potential $\phi$ and vector potential $\vec A$ forms a four-vector $A^\mu = (\phi, \vec A)$. $\vec E$ and $\vec B$ are written in terms of $A^\mu$ as
+\begin{align}
+    \vec E &= -\vec\nabla \phi - \partial_t \vec A
+    = (-F^{01}, -F^{02}, -F^{03}),\\
+    \vec B &= \vec\nabla \times \vec A
+    = (-F^{23}, -F^{31}, -F^{12}).
+\end{align}
+Then, under $P$, $\vec E$ is odd and $\vec B$ is even. Under $T$, $\vec E$ is even and $\vec B$ is odd.
+The behavior of $\vec s$ is same as the angular momentum, so it is even for $P$ and odd for $T$.
+See table \ref{tab:E, B, s and P and T}.
+
+Thus, we can immediately see that, if we impose either $P$ or $T$ symmetry on the Hamiltonian, $d_n$ should be zero but nonzero $\mu_n$ is allowed.
+So do we have either $P$ or $T$ symmetry in nature?
+Actually, the situation is more complicated as we will see in this lecture.
+
+\begin{table}
+\centering
+\begin{tabular}{c|ccc|cc}
+& $\vec s$ & $\vec E$ & $\vec B$ & $\mu$ & $d$ \\\hline
+$P$ & $+$ & $-$ & $+$ & $+$ & $-$ \\
+$T$ & $-$ & $+$ & $-$ & $+$ & $-$ \\
+\end{tabular}
+\caption{Symmetry and dipole moments.} \label{tab:E, B, s and P and T}
+\end{table}
+
+In section \ref{sec:c p cp}, we briefly review the most generic Lagrangian of QED and QCD, and also their symmetries.
+In section \ref{sec:instanton}, we review the BPST instanton and see that $\theta$-term in non-abelian gauge theory cannot be neglected in general.
+In section \ref{sec:chpt}, we introduce effective field theory for mesons to describe the physical consequences of $\theta$-term, and we will see the connection between $U(1)_A$ problem and the strong CP problem.
+In section \ref{sec:cpv sm}, we will discuss CP violation in the Standard Model.
+In section \ref{sec:topological susceptibility}, we will reformulate the strong CP problem by using topological susceptibility.
+In section \ref{sec:qcd axion}, we describe the QCD axion.
+In section \ref{sec:nelson barr}, we describe the Nelson-Barr mechanism which is based on the spontaneous symmetry breaking of CP symmetry.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{C, P, and CP symmetry}\label{sec:c p cp}
+In this section, we briefly review $C$, $P$, and $CP$ symmetry in QED and QCD. The following textbook is useful to understand this section.
+\begin{itemize}
+    \item Peskin-Schroeder \cite{Peskin:1995ev} \S 3, \S 15, \S 19
+    %\item Srednicki \S 61, \S 69, \S 77, \S 93
+\end{itemize}
+
+\subsection{QED}
+Let us start our discussion from QED. The Lagrangian of QED is given by
+\begin{align}
+    \mathcal{L} = -\frac{1}{4} F_{\mu\nu} F^{\mu\nu} + \bar\psi (i\gamma^\mu D_\mu - m) \psi, \label{eq:lagrangian QED}
+\end{align}
+where $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$ and $D_\mu = \partial_\mu + i e A_\mu$.
+
+$A_\mu$ is the photon field and $\psi$ is the electron field.
+This Lagrangian is invariant under the following gauge transformation:
+\begin{align}
+    \psi \to \exp\left( -i\alpha(x) \right) \psi,\qquad
+    A_\mu \to A_\mu + \frac{1}{e}\partial_\mu \alpha(x). \label{eq:gauge transformation QED}
+\end{align}
+$F_{\mu\nu}$ is invariant under this gauge transformation.
+Since
+\begin{align}
+    \partial_\mu \psi \to \exp\left( -i\alpha(x) \right) \left( \partial_\mu \psi - i (\partial_\mu\alpha) \psi \right),
+\end{align}
+we can find
+\begin{align}
+    D_\mu \psi \to \exp\left( -i\alpha(x) \right) D_\mu \psi.
+\end{align}
+
+
+\subsubsection{Global symmetries in QED}
+Let us investigate global symmetries in QED. The Lagrangian of QED \eqref{eq:lagrangian QED} is invariant under the following global phase rotation:
+\begin{align}
+    \psi \to e^{i\alpha} \psi.
+\end{align}
+This global $U(1)$ symmetry is associated with the conservation of electron number.
+Noether current associated with this global $U(1)$ symmetry is given by
+\begin{align}
+    J^\mu = \bar\psi \gamma^\mu \psi.
+\end{align}
+This current is conserved as
+\begin{align}
+    \partial_\mu J^\mu = 0.
+\end{align}
+
+In addition to the global $U(1)$ symmetry, the Lagrangian of QED \eqref{eq:lagrangian QED} is invariant under $C$, $P$, and $T$ transformation.
+
+The $P$ transformation is defined as
+\begin{align}
+    \psi(t,\vec x) &\to \gamma^0 \psi(t,-\vec x), \\
+    A_\mu(t,\vec x) &\to P_{\mu}^{\,\nu} A_\nu(t, -\vec x),
+\end{align}
+where $P_{\mu}^{\,\nu} = {\rm diag}(1, -1, -1, -1)$. Under this $P$ transformation, the electron current operator behaves as
+\begin{align}
+    \bar\psi \gamma^0 \psi &\to (\psi^\dagger \gamma^0 \gamma^0) \gamma^0 (\gamma^0 \psi) = \bar\psi \gamma^0 \psi, \\
+    \bar\psi \gamma^i \psi &\to (\psi^\dagger \gamma^0 \gamma^0) \gamma^i (\gamma^0 \psi) = -\bar\psi \gamma^i \psi, \\
+    \bar\psi \psi &\to (\psi^\dagger \gamma^0 \gamma^0) (\gamma^0 \psi) = \bar\psi \psi.
+\end{align}
+
+The $C$ transformation is defined as
+\begin{align}
+    \psi(t,\vec x) &\to i \gamma^2 \psi^*(t, \vec x), \\
+    A_\mu(t,\vec x) &\to -A_\mu(t, \vec x).
+\end{align}
+The electron current operator behaves as
+\begin{align}
+    \bar\psi \gamma^\mu \psi
+    &\to \psi^T (i \gamma^2)^\dagger \gamma^0 \gamma^\mu (i \gamma^2) \psi^* \nonumber\\
+    &= -\psi^\dagger (i\gamma^2)^T (\gamma^\mu)^T (\gamma^0)^T (i\gamma^2)^* \psi \nonumber\\
+    &= \psi^\dagger \gamma^2 (\gamma^\mu)^T \gamma^0 \gamma^2 \psi \nonumber\\
+    &= -\bar\psi \gamma^\mu \psi, \\
+%
+    \bar\psi \psi &\to \psi^T (i\gamma^2)^\dagger \gamma^0 (i\gamma^2) \psi^* \nonumber\\
+    &= -\psi^\dagger (i\gamma^2)^T (\gamma^0)^T (i\gamma^2)^* \psi \nonumber\\
+    &= \psi^\dagger \gamma^2 \gamma^0 \gamma^2 \psi\nonumber\\
+    &= \bar\psi \psi.
+\end{align}
+Here we have used $(\gamma^\mu)^T = \gamma^2 \gamma^0 \gamma^\mu \gamma^0 \gamma^2$.
+
+The $T$ transformation is defined as
+\begin{align}
+    \psi(t,\vec x) \to -\gamma^1 \gamma^3 \psi(-t, \vec x), \\
+    A_\mu(t,\vec x) \to T_{\mu}^{\,\nu} A_\nu(-t, \vec x),
+\end{align}
+where $T_{\mu}^{\,\nu} = {\rm diag}(-1, 1, 1, 1)$.
+Then, $\psi$ is transformed as
+\begin{align}
+    \bar\psi \gamma^\mu \psi &\to \bar\psi \gamma^3 \gamma^1 (\gamma^\mu)^* \gamma^1 \gamma^3 \psi = \begin{cases}
+        \bar\psi \gamma^0 \psi & (\mu = 0) \\
+        -\bar\psi \gamma^i \psi & (\mu = i)
+    \end{cases}, \\
+    \bar\psi \psi &\to \bar\psi \gamma^3 \gamma^1 \gamma^1 \gamma^3 \psi = \bar\psi \psi.
+\end{align}
+Here we have used that $T$ transformation is anti-unitary, so $(\gamma^\mu)^*$ appears in the transformation of $\bar\psi \gamma^\mu \psi$.
+
+Thus, the Lagrangian given in eq.~\eqref{eq:lagrangian QED} is invariant under $C$, $P$, and $T$ transformation. Also the Lagrangian is invariant under $CP$ transformation.
+
+\subsubsection{Axial symmetry, chiral anomaly, and Fujikawa method}
+Let us consider the limit of $m\to 0$ in QED. In this limit, the Lagrangian looks invariant under the following axial phase rotation:
+\begin{align}
+    \psi \to \psi' = e^{i\alpha \gamma_5} \psi.
+\end{align}
+Let us call this symmetry $U(1)_A$ symmetry. Noether current associated with this $U(1)_A$ symmetry is given by
+\begin{align}
+    J_5^\mu = \bar\psi \gamma^\mu \gamma^5 \psi.
+\end{align}
+Then, we can naively expect that this current is conserved as
+\begin{align}
+    \partial_\mu J_5^\mu = 0?
+\end{align}
+However, this $U(1)_A$ symmetry is broken by quantum effect, chiral anomaly! We can see the chiral anomaly by using Fujikawa method.
+
+The partition function of QED is given by
+\begin{align}
+    Z = \int {\cal D}A \int {\cal D}\psi {\cal D}\bar\psi \exp\left( i \int d^4 x {\cal L}[\psi, A]\right)
+\end{align}
+Let us replace $\psi$ to $\psi'$ as
+\begin{align}
+    Z = \int {\cal D}A \int {\cal D}\psi' {\cal D}\bar\psi' \exp\left( i \int d^4 x {\cal L}[\psi', A]\right),
+\end{align}
+and write $\psi'$ by the following infinitesimal chiral field redefinition:
+\begin{align}
+    \psi(x) \to \psi'(x) = (1 + i\alpha(x) \gamma_5) \psi(x), \\
+    \bar\psi(x) \to \bar\psi'(x) = \bar\psi(x) (1 + i\alpha(x) \gamma_5).
+\end{align}
+Then, the Lagrangian ${\cal L}[\psi',A]$ can be written in term of $\psi$ as
+\begin{align}
+    \int d^4 x \bar{\psi'}(x) (i\gamma^\mu D_\mu) \psi'(x)
+    &= \int d^4 x \left[ \bar\psi(x) (i\gamma^\mu D_\mu) \psi(x) - (\partial_\mu \alpha(x)) \bar\psi \gamma^\mu \gamma^5 \psi \right] \nonumber\\
+    &= \int d^4 x \left[ \bar\psi(x) (i\gamma^\mu D_\mu) \psi(x) + \alpha(x) \partial_\mu J_5^\mu \right],
+\end{align}
+where $J_5^\mu = \bar\psi \gamma^\mu \gamma^5 \psi$ is the axial current
+The integral measure ${\cal D}\psi'{\cal D}\bar\psi'$ is not same as ${\cal D}\psi {\cal D}\bar\psi$!
+\begin{align}
+    {\cal D}\psi' {\cal D}\bar\psi' \simeq {\cal D}\psi {\cal D}\bar\psi \exp\left( i \int d^4 x \alpha(x) \frac{e^2}{8\pi^2} F_{\mu\nu} \tilde F^{\mu\nu} \right),
+\end{align}
+$\tilde F_{\mu\nu} = (1/2) \epsilon_{\mu\nu\rho\sigma} F^{\rho\sigma}$ is the dual field strength.
+%The derivation of this result is given in Appendix \ref{sec:fujikawa method}.
+
+Thus, the partition function $Z$ can be written as
+\begin{align}
+    Z = \int {\cal D}A \int {\cal D}\psi' {\cal D}\bar\psi' \exp\left( i \int d^4 x {\cal L}[\psi', A]\right)
+    = \int {\cal D}A \int {\cal D}\psi {\cal D}\bar\psi \exp\left( i \int d^4 x ({\cal L}[\psi, A] + \delta{\cal L}) \right),
+\end{align}
+where the correction to the Lagrangian is given by
+\begin{align}
+    \delta {\cal L} = \alpha(x) \left[ (\partial_\mu J_5^\mu) + \frac{e^2}{8\pi^2} F_{\mu\nu} \tilde F^{\mu\nu} \right].
+\end{align}
+As a result, axial current is not conserved in the background of electromagnetic field as
+\begin{align}
+    \partial_\mu J_5^\mu = -\frac{e^2}{8\pi^2} F_{\mu\nu} \tilde F^{\mu\nu}.
+\end{align}
+Thus, the $U(1)_A$ symmetry is broken in the electromagnetic background with $F_{\mu\nu} \tilde F^{\mu\nu} \neq 0$.
+
+
+\subsubsection{The most generic Lagrangian of QED}
+We gave the QED Lagrangian in eq.~\eqref{eq:lagrangian QED}. However, is this the most generic renormalizable Lagrangian under the gauge symmetry?
+Let us construct the most generic renormalizable Lagrangian of $A_\mu$ and $\psi$ which is invariant under the gauge transformation given in eq.~\eqref{eq:gauge transformation QED}.
+
+Lagrangian is made of gauge-invariant Lorentz-scalar terms. There is no such term up to dimension 2.
+Possible dimension 3 operators are
+\begin{align}
+    \bar\psi \psi, \qquad
+    \bar\psi \gamma^5 \psi.
+\end{align}
+Possible dimension 4 operators are
+\begin{align}
+    F_{\mu\nu} F^{\mu\nu}, \qquad
+    F_{\mu\nu} \tilde F^{\mu\nu}, \qquad
+    \bar\psi \gamma^\mu D_\mu \psi, \qquad
+    \bar\psi \gamma^\mu D_\mu \gamma^5 \psi,
+\end{align}
+where $\tilde F_{\mu\nu} \equiv (1/2) \epsilon_{\mu\nu\rho\sigma} F^{\rho\sigma}$.
+
+By assuming canonically normalized kinetic term, we obtain the Lagrangian as
+\begin{align}
+    \mathcal{L} = -\frac{1}{4} F_{\mu\nu} F^{\mu\nu} + \bar\psi (i\gamma^\mu D_\mu - m_R + i m_I \gamma^5) \psi + \frac{e^2 \theta}{16\pi^2} F_{\mu\nu} \tilde F^{\mu\nu}. \label{eq:lagrangian QED2}
+\end{align}
+
+\subsubsection{The phase in the mass and theta-term}
+In the standard textbook, $m_I$ and $\theta$ are taken to be $0$. Let us investigate $m_I$ and $\theta$ in more detail.
+$\psi$ bilinear term can be written as
+\begin{align}
+    m_R \bar\psi \psi - i m_I \bar\psi \gamma^5 \psi
+    =
+    (m_R + i m_I) \bar\psi_R \psi_L + (m_R - i m_I) \bar\psi_L \psi_R,
+\end{align}
+where $\psi_{L,R} = P_{L,R} \psi$. Thus, we can regard $m \equiv m_R + i m_I$ as a complex mass parameter.
+
+As similar to the discussion in the previous subsection, we replace $\psi$ to $\psi'$, and assume $\psi'$ is related to $\psi$ by the following chiral phase rotation:
+\begin{align}
+    \psi \to \psi' = \exp\left( \frac{i}{2} \xi \gamma_5 \right) \psi,
+\end{align}
+where $\xi \equiv {\rm arg}(m_R + i m_I)$. Then, we obtain
+\begin{align}
+    m_R \bar\psi' \psi' - i m_I \bar\psi' \gamma^5 \psi' = |m| \bar\psi \psi.
+\end{align}
+However, because of chiral anomaly, we obtain the following additional term in the Lagrangian:
+\begin{align}
+    \delta{\cal L} = \frac{\xi e^2}{16\pi^2} F_{\mu\nu} \tilde F^{\mu\nu}.
+\end{align}
+This effectively shift $\theta \to \theta + \xi$.
+Thus, we can conclude individual $\theta$ and $\arg m$ does not have physical meaning because they are basis-dependent.
+From these argument, we can see that the following two Lagrangians are equivalent:
+\begin{align}
+    {\cal L} &= \bar\psi (i\gamma^\mu D_\mu) \psi - m \bar\psi_R \psi_L - m^* \bar\psi_L \psi_R - \frac{1}{4}F_{\mu\nu} F^{\mu\nu} + \frac{\theta e^2}{16\pi^2} F_{\mu\nu} \tilde F^{\mu\nu}, \\
+    {\cal L}' &= \bar\psi (i\gamma^\mu D_\mu) \psi - |m| \bar\psi \psi - \frac{1}{4}F_{\mu\nu} F^{\mu\nu} + \frac{(\theta + \arg m) e^2}{16\pi^2} F_{\mu\nu} \tilde F^{\mu\nu}.
+\end{align}
+From this observation, we can define the following variable which is independent of the chiral phase rotation.
+\begin{align}
+    \bar\theta \equiv \theta + \arg m.
+\end{align}
+
+Does ${\cal L}_\theta$ have any physical effect? First ${\cal L}_\theta$ can be written as a total derivative as
+\begin{align}
+    F_{\mu\nu} \tilde F^{\mu\nu} = \partial_\mu ( \varepsilon^{\mu\nu\rho\sigma} A_\nu F_{\rho\sigma} ).
+\end{align}
+This means there is no effect in perturbative calculation.
+Even in non-perturbative calculation, there is no configuration to contribute nonzero $\int d^4 x F_{\mu\nu} \tilde F^{\mu\nu}$ in QED.
+Thus, there is no configuration in QED to make ${\cal L}_\theta$ relevant.
+% *** This argument can be sharpened *** 
+(The existence of a monopole can be a loop hole of this argument. $\theta$ can have a physical effect in the presence of the monopoles \cite{Witten:1979ey, Fan:2021ntg}.)
+
+
+To summarize, the most general renormalizable Lagrangian of QED automatically preserves $C$, $P$, and $CP$, i.e., they are accidental symmetries.
+
+
+\subsection{QCD}
+Now, let us talk about QCD, $SU(3)$ gauge theory with $N_f$ flavors of fundamental representation quarks. The Lagrangian is
+\begin{align}
+    \mathcal{L} = -\frac{1}{4} G_{\mu\nu}^a G^{a\mu\nu} + \frac{g^2 \theta}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}
+    + \sum_{i=1}^{N_f} \bar q_i (i\gamma^\mu D_\mu - m_i) q_i, \label{eq:lagrangian QCD}
+\end{align}
+where the covariant derivative $D_\mu$ and field strength $G_{\mu\nu}^a$ are defined as
+\begin{align}
+    D_\mu &= \partial_\mu + i g A_\mu^a T^a, \\
+    G_{\mu\nu}^a &= \partial_\mu A_\nu^a - \partial_\nu A_\mu^a + g f^{abc} A_\mu^b A_\nu^c.
+\end{align}
+Here $T^a$ is the generator of $SU(3)$ in the fundamental representation, and we take the normalization as ${\rm tr}[T^a T^b] = \delta^{ab}/2$. In this normalization, $T^a$ is given by $T^a = \lambda^a/2$, where $\lambda^a$ is the Gell-Mann matrix. 
+It is convenient to define $A_\mu$ and $G_{\mu\nu}$ as
+\begin{align}
+    A_\mu \equiv A_\mu^a T^a, \qquad
+    G_{\mu\nu} \equiv G_{\mu\nu}^a T^a = \partial_\mu A_\nu - \partial_\nu A_\mu -i g [A_\mu, A_\nu].
+\end{align}
+\begin{align}
+    \mathcal{L} = -\frac{1}{2} {\rm tr}[G_{\mu\nu} G^{\mu\nu}] + \frac{g^2 \theta}{16\pi^2} {\rm tr}[G_{\mu\nu} \tilde G^{\mu\nu}]
+    + \sum_{i=1}^{N_f} \bar q_i (i\gamma^\mu D_\mu - m_i) q_i
+\end{align}
+
+The $P$ transformation is defined as
+\begin{align}
+    q_i(t,\vec x) &\to \gamma^0 q_i(t,-\vec x), \\
+    A_\mu^a(t,\vec x) &\to P_{\mu}^{\,\nu} A_\nu^a(t, -\vec x).
+\end{align}
+%
+The $C$ transformation is defined as
+\begin{align}
+    q_i(t,\vec x) &\to i \gamma^2 q_i^*(t, \vec x), \\
+    A_\mu^a(t,\vec x) T^a &\to -A_\mu^a(t, \vec x) (T^a)^T.
+\end{align}
+Thus, each component of $A_\mu^a$ behaves as
+\begin{align}
+    A_\mu^{1,3,4,6,8} &\to -A_\mu^{1,3,4,6,8}, \\
+    A_\mu^{2,5,7} &\to A_\mu^{2,5,7}.
+\end{align}
+In the matrix form, the $C$ transformation is simply written as
+\begin{align}
+    A_\mu(t,\vec x) \to -A_\mu^T(t, \vec x).
+\end{align}
+
+
+Let us show the $\theta$ term in QCD can be written as a total derivative. 
+\begin{align}
+    {\rm tr}[G_{\mu\nu} \tilde G^{\mu\nu}]
+    &= \frac{1}{2} \epsilon^{\mu\nu\rho\sigma} {\rm tr}[G_{\mu\nu} G_{\rho\sigma}] \nonumber\\
+    &= \frac{1}{2} \epsilon^{\mu\nu\rho\sigma} {\rm tr}[4(\partial_\mu A_\nu) (\partial_\rho A_\sigma) - 4i g (\partial_\mu A_\nu) [A_\rho, A_\sigma] - g^2 [A_\mu, A_\nu][A_\rho, A_\sigma]] \nonumber\\
+    &= \frac{1}{2} \epsilon^{\mu\nu\rho\sigma} {\rm tr}[4(\partial_\mu A_\nu) (\partial_\rho A_\sigma) - 8i g (\partial_\mu A_\nu) A_\rho A_\sigma - g^2 A_\mu A_\nu [A_\rho, A_\sigma] + g^2 A_\mu [A_\rho, A_\sigma] A_\nu] \nonumber\\
+    &= \frac{1}{2} \epsilon^{\mu\nu\rho\sigma} {\rm tr}[4(\partial_\mu A_\nu) (\partial_\rho A_\sigma) - 8i g (\partial_\mu A_\nu) A_\rho A_\sigma] \nonumber\\
+    &= \frac{1}{2} \epsilon^{\mu\nu\rho\sigma} \partial_\mu {\rm tr}[4 A_\nu (\partial_\rho A_\sigma) - \frac{8}{3}i g A_\nu A_\rho A_\sigma].
+\end{align}
+Thus,
+\begin{align}
+    G_{\mu\nu}^a \tilde G^{a\mu\nu} = 2 {\rm tr}[G_{\mu\nu} \tilde G^{\mu\nu}] = \partial_\mu J_{\rm CS}^\mu,
+\end{align}
+where $J_{\rm CS}^\mu$ is the Chern--Simons current defined as
+\begin{align}
+    J_{\rm CS}^\mu
+    &\equiv 2\epsilon^{\mu\nu\rho\sigma} {\rm tr}[2 A_\nu (\partial_\rho A_\sigma) - \frac{4}{3}i g A_\nu A_\rho A_\sigma]
+    = \epsilon^{\mu\nu\rho\sigma} {\rm tr}[ 2A_\nu G_{\rho\sigma} + \frac{4}{3}i g A_\nu A_\rho A_\sigma].
+\end{align}
+
+One of the most important differences between QED and QCD is that we \textit{cannot} forget about $\theta$ term.
+In non-abelian gauge theory case, there is a configuration of gauge field to make $\theta$ term relevant, instanton.
+This will be discussed in the next section.
+
+Under $P$ and $C$ transformation, $G_{\mu\nu}$ behaves as
+\begin{align}
+    G_{\mu\nu}(t,\vec x) \to_P P_\mu^{~\alpha} P_\nu^{~\beta} G_{\alpha\beta}(t,-\vec x), \qquad
+    G_{\mu\nu}(t,\vec x) \to_C -G_{\mu\nu}^T(t,\vec x).
+\end{align}
+$\theta$ term can be written in the matrix form as
+\begin{align}
+    {\cal L}_\theta = \frac{\theta g^2}{16\pi^2} {\rm tr}[G_{\mu\nu} \tilde G^{\mu\nu}].
+\end{align}
+Thus,
+\begin{align}
+    {\cal L}_\theta \to_P -{\cal L}_\theta, \qquad
+    {\cal L}_\theta \to_C {\cal L}_\theta.
+\end{align}
+We can see that $\theta$ term preserves $C$ but breaks both $P$ and $CP$.
+
+Let us write the complex mass term of quarks as
+\begin{align}
+    \mathcal{L} = -\frac{1}{4} G_{\mu\nu}^a G^{a\mu\nu}
+    + \sum_{i=1}^{N_f} [ \bar q_i (i\gamma^\mu D_\mu) q_i - m_i \bar q_{i,R} q_{i,L} - m_i^* \bar q_{i,L} q_{i,R} ].
+\end{align}
+We can redefine the quark field by the following chiral phase rotation:
+\begin{align}
+    q_i \to q_i' = \exp\left( \frac{i}{2} \xi_i \gamma_5 \right) q_i,
+\end{align}
+where $\xi_i = {\rm arg}(m_i)$. Then, we obtain
+\begin{align}
+    \mathcal{L}' = -\frac{1}{4} G_{\mu\nu}^a G^{a\mu\nu} + \frac{g^2 \sum_i \xi_i}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}
+    + \sum_{i=1}^{N_f} [ \bar q_i (i\gamma^\mu D_\mu) q_i - |m_i| \bar q_{i} q_{i} ].
+\end{align}
+From these argument, we can see that the following two Lagrangians are equivalent:
+\begin{align}
+    \mathcal{L} &= -\frac{1}{4} G_{\mu\nu}^a G^{a\mu\nu} + \frac{g^2 \theta}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}
+    + \sum_{i=1}^{N_f} [ \bar q_i (i\gamma^\mu D_\mu) q_i - m_i \bar q_{i,R} q_{i,L} - m_i^* \bar q_{i,L} q_{i,R} ], \\
+    \mathcal{L}' &= -\frac{1}{4} G_{\mu\nu}^a G^{a\mu\nu} + \frac{g^2 (\theta + \sum_i \arg m_i)}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}
+    + \sum_{i=1}^{N_f} [ \bar q_i (i\gamma^\mu D_\mu) q_i - |m_i| \bar q_{i} q_{i} ].
+\end{align}
+We can define the following variable which is independent of the chiral phase rotation:
+\begin{align}
+    \bar\theta \equiv \theta + \sum_i {\rm arg} m_i.
+\end{align}
+
+\subsection{Summary of this section}
+In this section, we wrote down the most generic renormalizable Lagrangian of QED and QCD. We found that $\theta$ term can be written in generic Lagrangian. However, $\theta$ term is total derivative, and we need more detailed discussion on its physical implications. 
+In the next section, we will discuss non-perturbative effect which is relevant to $\theta$ term.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Instanton and vacua in non-abelian gauge theory}\label{sec:instanton}
+In this section, we discuss instanton and see that $\theta$ term in non-abelian gauge theory cannot be neglected in general. We also introduce $\theta$-vacua.
+The following textbooks are useful to understand this section.
+\begin{itemize}
+\item Srednicki \cite{Srednicki:2007qs} \S 93
+\item Weinberg \cite{Weinberg:1996kr} \S 23
+\item Rubakov \cite{Rubakov:2002fi} \S 11, \S 13
+\end{itemize}
+
+
+\subsection{Instanton}
+In the previous section, we have seen that $\theta$ term can be written as a total derivative. In this section, we show there exists a configuration such that the total derivative term can be relevant. This configuration is called instanton \cite{Belavin:1975fg}.
+
+Let us discuss $SU(2)$ pure Yang--Mills theory in the Euclidean spacetime. The Lagrangian is given by
+\begin{align}
+    S_E = \int d^4 x \frac{1}{4} F_{ij}^a F^{aij}.
+\end{align}
+By using the following identity,
+\begin{align}
+\int d^4x_E (F_{ij}^a \pm \tilde F_{ij}^a )^2 \geq 0,
+\end{align}
+we can obtain the following bound on the Euclidean action:
+\begin{align}
+S_E \geq \frac{1}{4} \left| \int d^4x_E F_{ij}^a \tilde F_{ij}^a \right|. \label{eq:bound on Euclidean action}
+\end{align}
+Note that the integral in RHS can be written as a surface integral as
+\begin{align}
+    & \frac{g^2}{32\pi^2} \int d^4 x_E F_{ij}^a \tilde F^{aij} \nonumber\\
+    \to& \frac{g^2}{32\pi^2} \int d^4 x_E \epsilon^{ijkl} \partial_i \left( \frac{4}{3}ig {\rm tr}[A_j A_k A_l] \right) \nonumber\\
+    =& i \frac{g^3}{24\pi^2} \int dS_i \epsilon^{ijkl} {\rm tr}[ A_j A_k A_l],
+\end{align}
+where we have used $F_{ij}^a$ decays fast enough at $|x| \to \infty$
+and an asymptotic form of $A_i$ at $|x| \to \infty$,
+\begin{align}
+    A_\mu \to \frac{i}{g} U \partial_\mu U^\dagger.
+\end{align}
+We obtain
+\begin{align}
+    n = \frac{1}{24\pi^2} \int dS_\mu \epsilon^{\mu\nu\rho\sigma} {\rm tr} \left[ (U \partial_\nu U^\dagger) (U \partial_\rho U^\dagger) (U \partial_\sigma U^\dagger) \right]. \label{eq:topological charge}
+\end{align}
+This $n$ takes an integer value.
+%For details see Appendix \ref{sec:topological charge}.
+Thus, the RHS of eq.~\eqref{eq:bound on Euclidean action} is discretized as
+\begin{align}
+    S_E \geq \frac{8\pi^2 |n|}{g^2}.
+\end{align}
+The lower bound of the Euclidean action is saturated when the following (anti-)self-dual condition is satisfied:
+\begin{align}
+F_{ij}^a = \pm \tilde F_{ij}^a.
+\end{align}
+
+Let us take the following ansatz for the gauge field:
+\begin{align}
+A_i(x) =  \frac{i}{g} U_1 (\partial_i U_1^\dagger) f(r), \qquad
+U_1 = \frac{1}{r} \left(\begin{array}{cc}
+x_4 + i x_3 & i x_1 + x_2 \\
+i x_1 - x_2 & x_4 - i x_3
+\end{array}\right),
+\end{align}
+where $r = \sqrt{x_1^2 + x_2^2 + x_3^2 + x_4^2}$.
+Note that this $U_1$ can be regarded as a nontrivial map from $S^3$ to $SU(2)$, and it has a winding number $1$.
+By using this ansatz, we obtain
+\begin{align}
+\partial_i A_j =
+\frac{1}{g}\left[ - i (\partial_i \partial_j U_1) U_1^\dagger f
++ i (\partial_j U_1) U_1^\dagger (\partial_i U_1) U_1^\dagger f
+- i (\partial_j U_1) U_1^\dagger \partial_i f \right]
+\end{align}
+%
+Then,
+\begin{align}
+F_{ij} = \frac{1}{g} \left[
+\left[ i (\partial_j U_1) U_1^\dagger (\partial_i U_1) U_1^\dagger (f - f^2)
+- i (\partial_j U_1) U_1^\dagger \partial_i f \right] - \left[ i \leftrightarrow j \right] \right].
+\end{align}
+%
+At $(x_1,x_2,x_3,x_4)=(0,0,0,r)$, $U_1 = I_2$, $\partial_i U_1 = i \sigma^i/r~(i=1,2,3)$ and $\partial_4 U_1 = 0$. Then,
+\begin{align}
+g F_{12} &= -\frac{i}{r^2} [i\sigma_1, i\sigma_2] (f-f^2) = -\frac{2}{r^2}(f-f^2) \sigma^3, \\
+g F_{34} &= i \frac{i\sigma_3}{r} f' = -\frac{f'}{r} \sigma^3
+\end{align}
+%
+From $F_{12} = F_{34}$, we obtain
+\begin{align}
+\frac{1}{r} \frac{df}{dr} &= \frac{2}{r^2}(f-f^2).
+\end{align}
+%
+This can be solved in a standard way:
+\begin{align}
+\frac{df}{f-f^2} &= \frac{2}{r}dr \nonumber\\
+%\frac{df}{f} + \frac{df}{1-f} &= \frac{2}{r} \nonumber\\
+\log f - \log (1-f) &= 2 \log \frac{r}{R}.
+\end{align}
+where $R$ is an arbitrary constant. Then, we easily obtain
+\begin{align}
+\frac{1}{f}-1 &= \frac{R^2}{r^2} \nonumber\\
+f &= \frac{r^2}{R^2 + r^2}
+\end{align}
+%
+To summarize, we obtain a non-trivial stationary point of Euclidean action:
+\begin{align}
+A_i(x) = \frac{1}{g} \frac{r^2}{r^2 + R^2} i U_1 (\partial_i U_1^\dagger), \qquad
+U_1 = \frac{1}{r} \left(\begin{array}{cc}
+x_4 + i x_3 & i x_1 + x_2 \\
+i x_1 - x_2 & x_4 - i x_3
+\end{array}\right).
+\end{align}
+%
+From this configuration, we obtain
+\begin{align}
+S_E = \frac{8\pi^2}{g^2}, \qquad
+\frac{g^2}{32\pi^2} \int d^4x F_{ij}^a \tilde F^{aij} = 1.
+\end{align}
+%
+Note that the action of instanton is independent of size $R$ of instanton. This is because Yang-Mills theory is classically scale-invariant.
+
+
+
+\subsection{Ground states in quantum pendulum}
+See Rubakov's textbook. \cite{Bachas:2016ffl, Aghaie:2026pkf} would be also useful.
+
+\subsubsection{A ring on 3D space}
+The Lagrangian of a charged particle in vector potential $\vec A$ and potential $V(\vec x)$ is given by
+\begin{align}
+    L = \frac{1}{2} m \vec{\dot x}^2 + e \vec A \cdot \vec{\dot x} - V(\vec x).
+\end{align}
+$m$ is the mass of the particle and $e$ is the charge of the particle. $V(\vec x)$ can be gravitational potential, electric potential, or something else.
+
+Let us assume this particle is constrained on a ring with radius $\ell$. Then, we can write $L$ as
+\begin{align}
+    L = \frac{1}{2} m \ell^2 \dot\varphi^2 + e A_\varphi(\varphi) \ell \dot\varphi - V(\varphi).
+\end{align}
+$A_\varphi$ is the $\varphi$-component of $\vec A$.
+By taking an appropriate gauge transformation, we can make $A_\varphi$ to be a constant on the ring. Then, we can write $A_\varphi$ as
+\begin{align}
+    A_\varphi = \frac{\Phi}{2\pi \ell},
+\end{align}
+where $\Phi$ is the magnetic flux through the ring.
+Then, by defining $I \equiv m \ell^2$, we can write $L$ as
+\begin{align}
+    L = \frac{1}{2} I \dot\varphi^2 + \frac{e \Phi}{2\pi} \dot\varphi - V(\varphi).
+\end{align}
+Then, we obtain the canonical momentum $p_\varphi$ as
+\begin{align}
+    p_\varphi = \frac{\partial L}{\partial \dot\varphi} = I \dot\varphi + \frac{e \Phi}{2\pi},
+\end{align}
+and the Hamiltonian $H$ as
+\begin{align}
+    H = \frac{1}{2I} \left( p_\varphi - \frac{e\Phi}{2\pi} \right)^2 + V(\varphi).
+\end{align}
+Then Schr\"odinger equation is given by
+\begin{align}
+    \frac{1}{2I} \left( -i \frac{\partial}{\partial \varphi} - \frac{e\Phi}{2\pi} \right)^2 \psi(\varphi) + V(\varphi) \psi(\varphi) = E \psi(\varphi),
+\end{align}
+where $\psi(\varphi)$ is the wave function with the periodic boundary condition
+\begin{align}
+    \psi(\varphi + 2\pi) = \psi(\varphi).
+\end{align}
+
+\subsubsection{Generic Lagrangian of particle on $S^1$}
+Let us construct an equivalent setup from a different way.
+
+First, let us assume $\varphi \in \mathbb{R}$. (not $[0,2\pi)$!)
+By using a periodic potential $V(\varphi) = V(\varphi + 2\pi)$, we take the following Lagrangian:
+\begin{align}
+    L = \frac{1}{2} I \dot\varphi^2 - V(\varphi).
+\end{align}
+Then, we obtain the canonical momentum $p_\varphi = I \dot\varphi$ and the Hamiltonian $H$ as
+\begin{align}
+    H = \frac{1}{2I} p_\varphi^2 + V(\varphi).
+\end{align}
+The Schr\"odinger equation is given by
+\begin{align}
+    -\frac{1}{2I}\frac{\partial^2}{\partial \varphi^2} \psi(\varphi) + V(\varphi) \psi(\varphi) = E \psi(\varphi).
+\end{align}
+
+This description has a redundancy because $\varphi$ and $\varphi + 2\pi$ are physically equivalent. Thus, we need to impose a boundary condition on the wave function $\psi(\varphi)$:
+\begin{align}
+    |\psi(\varphi + 2\pi)| = |\psi(\varphi)|.
+\end{align}
+Then, generic boundary condition can be written as
+\begin{align}
+    \psi(\varphi + 2\pi) = e^{i\theta} \psi(\varphi), \label{eq:bc quantum pendulum}
+\end{align}
+where $\theta$ is a real parameter. Let us define
+\begin{align}
+    \tilde\psi(\varphi) \equiv \exp\left(-i\frac{\theta}{2\pi} \varphi\right) \psi(\varphi).
+\end{align}
+Then,
+\begin{align}
+    \tilde\psi(\varphi + 2\pi) = \tilde\psi(\varphi),
+\end{align}
+and the Schr\"odinger equation for $\tilde\psi$ can be written as
+\begin{align}
+    \frac{1}{2I} \left( -i \frac{\partial}{\partial \varphi} + \frac{\theta}{2\pi} \right)^2 \tilde\psi(\varphi) + V(\varphi) \tilde\psi(\varphi) = E \tilde\psi(\varphi).
+\end{align}
+Then, once we identify as
+\begin{align}
+    \theta = -e \Phi,
+\end{align}
+this setup is equivalent to the previous setup of a ring on 3D space!
+
+
+\subsubsection{$n$ states and $\theta$ states on a ring}
+Let us assume $V(\varphi)$ is large enough to justify the WKB approximation. By assuming $V(\varphi)$ has a minimum at $\varphi = 0$, we can consider the wave function localized at $\varphi = 2\pi n$ such as
+\begin{align}
+    \psi_n(\varphi) \sim \exp\left( -\frac{1}{2} \frac{(\varphi - 2\pi n)^2}{\sigma^2} \right),
+\end{align}
+where $\sigma \ll 1$. Let us call this state as $n$ states $|n\rangle$. However, $n$ state does not satisfy the boundary condition \eqref{eq:bc quantum pendulum}.
+Thus, we can construct the following $\theta$ state which satisfies the boundary condition \eqref{eq:bc quantum pendulum} by superposing $n$ states:
+\begin{align}
+    \psi_\theta = \sum_{n=-\infty}^\infty e^{i n \theta} \psi_n(\varphi).
+\end{align}
+This is the correct ground state of the system.
+
+By assuming the tunneling between different $n$ state is small, we can approximate the matrix element of the Hamiltonian $H$ as
+\begin{align}
+    \langle m | H | n \rangle \simeq E_0 \delta_{mn} - K e^{-S} \delta_{m,n+1} - K e^{-S} \delta_{m,n-1}.
+\end{align}
+Then, energy eigenstate $|\theta\rangle$ is given by
+\begin{align}
+    H |\theta\rangle = \left( E_0 - 2 K e^{-S} \cos\theta \right) |\theta\rangle.
+\end{align}
+
+\subsection{Vacua in pure Yang--Mills theory}
+
+\subsubsection{$n$ vacua}
+We take temporal gauge $A_0 = 0$.
+\begin{align}
+    S = \int d^4 x \left[ \frac{1}{2}(\partial_0 A_i^a)^2 - \frac{1}{4} F_{ij}^a F^{aij} \right]
+\end{align}
+
+Let us discuss classical configuration to minimize the energy. Such a configuration should satisfy
+\begin{align}
+    F_{ij}^a =0
+\end{align}
+Then $A_i$ can be written as a pure gauge configuration as
+\begin{align}
+    A_i = \frac{i}{g} U \partial_i U^\dagger.
+\end{align}
+
+Trivial vacuum field configuration $A_i^a = 0$ is obtained from $U(\vec x) = I_2$. However, apparently, there are other possible zero energy configurations!
+
+There are field configurations with $U(\vec x)$ which is separated from $A_i^a = 0$ by a potential barrier. However, we could have quantum tunneling between those field configurations. Such a tunneling is possible if
+\begin{align}
+    U(\vec x) \to I_2 \qquad {\rm as}~|\vec x| \to \infty.
+\end{align}
+Because of this boundary condition, $U(\vec x)$ can be regarded as a map from $S^3$ to $SU(2)$. Such a map is classified by $\pi_3(SU(2)) = \mathbb{Z}$. Thus, we can label those field configurations by an integer $n$ as
+\begin{align}
+    A_i^{(n)} = \frac{i}{g} U_n \partial_i U_n^\dagger.
+\end{align}
+
+\subsubsection{$\theta$ vacua}
+These $n$ vacua configurations are not continuously connected to each other. However, they are connected by large gauge transformation as
+\begin{align}
+    A_i^{(n)} = \frac{i}{g} U_n \partial_i U_n^\dagger = \frac{i}{g} U_1^n \partial_i (U_1^n)^\dagger.
+\end{align}
+Thus, the situation is quite similar to the quantum pendulum.
+\begin{align}
+    |\theta\rangle = \sum_{n=-\infty}^\infty e^{i n \theta} |n\rangle.
+\end{align}
+
+\begin{table}
+\centering
+\begin{tabular}{c||c|c}
+& ring & pure Yang-Mills \\\hline\hline
+Lagrangian & $(1/2) I \dot\varphi^2 - V(\varphi)$ & $(1/4) F_{ij}^a F^{aij}$ \\\hline
+Large gauge transf. & $\varphi \to \varphi + 2\pi$ & $A_i \to U A_i U^\dagger + (i/g) U \partial_i U^\dagger$ \\\hline
+$n$ vacua & $\varphi\sim 2\pi n$ & $A_i = (i/g) U \partial_i U^\dagger$ \\\hline
+$\theta$ vacua & $|\theta\rangle = \sum_n e^{i n \theta} |n\rangle$ & $|\theta\rangle = \sum_n e^{i n \theta} |n\rangle$ \\\hline
+instanton & kink solution & BPST instanton
+\end{tabular}
+\caption{Comparison between quantum pendulum and pure Yang-Mills theory.}
+\end{table}
+
+
+\subsection{Summary of this section}
+In this section, we have discussed the non-perturbative effect of non-abelian gauge theory, instanton. We also showed that instanton configuration can be regarded as a tunneling effect between $n$ vacua, and the physical vacuum should be a linear combination of $n$ vacua, $\theta$ vacua.
+Vacua of QCD also have similar structure as pure Yang-Mills theory. In this case, the physical parameter is $\bar\theta = \theta + \sum\arg m$. Thus, $\bar\theta$ cannot be physical if there exists a massless quark. If all quarks are massive, $\bar\theta$ is physical.
+
+However, still, it is not clear what is the physical consequence of $\theta$ term. Since the $\theta$ term is a total derivative, we need to evaluate non-perturbative effects to understand its physical implications. For this purpose, in the next section, we will discuss physical consequences of $\theta$ term by using the chiral Lagrangian.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chiral Lagrangian}\label{sec:chpt}
+In this section, we will discuss the physical consequence of $\bar\theta$ in QCD. Since $\theta$ term is a total derivative, it does not have any effect in perturbation theory. Thus, we need to understand non-perturbative effect of QCD to understand the physical consequence of $\theta$ term. For this purpose, we will use the effective theory for hadrons. 
+The following textbooks and paper are useful to understand this section.
+\begin{itemize}
+\item Srednicki  \cite{Srednicki:2007qs} \S 94
+\item Weinberg \cite{Weinberg:1996kr} \S 19
+\item Pich-de Rafael \cite{Pich:1991fq}
+\end{itemize}
+
+
+\subsection{Global symmetry in QCD}
+Hadrons such as proton, neutron, pion, etc are understood as bound state of quarks and gluons, which can be described by QCD. Here we consider the QCD Lagrangian with three light quarks, up, down, and strange quarks. The Lagrangian is given by
+\begin{align}
+    {\cal L} = \sum_{q=u,d,s} \left[ i\bar q \gamma^\mu D_\mu q - m_q \bar q q \right]
+\end{align}
+
+\subsubsection{Chiral symmetry}
+In the massless limit, the Lagrangian is invariant under $U(3)_L \times U(3)_R$ chiral symmetry as
+\begin{align}
+\left(\begin{array}{c} u_L \\ d_L \\ s_L \end{array}\right) \to 
+U_L \left(\begin{array}{c} u_L \\ d_L \\ s_L \end{array}\right), \qquad
+\left(\begin{array}{c} u_R \\ d_R \\ s_R \end{array}\right) \to
+U_R \left(\begin{array}{c} u_R \\ d_R \\ s_R \end{array}\right), \label{eq:chiral symmetry}
+\end{align}
+where $U_L$ and $U_R$ are $3\times 3$ unitary matrices. Thus, the kinetic term respects the following global symmetry:
+\begin{align}
+    U(3)_L \times U(3)_R \simeq SU(3)_L \times SU(3)_R \times U(1)_V \times U(1)_A.
+\end{align}
+It is known that the quark bilinear condensate is formed in the vacuum as
+\begin{align}
+    \langle \bar u u \rangle \simeq
+    \langle \bar d d \rangle \simeq
+    \langle \bar s s \rangle \simeq -\Lambda_{\rm QCD}^3.
+\end{align}
+Thus, the chiral symmetry is spontaneously broken, and the unbroken symmetry in the vacuum is a diagonal subgroup of $U(3)_L \times U(3)_R$ as
+\begin{align}
+    U(3)_V = SU(3)_V \times U(1)_V.
+\end{align}
+$\pi$, $K$, and $\eta$ mesons are understood as NG bosons corresponding to the broken generators of $SU(3)_L \times SU(3)_R \to SU(3)_V$.
+
+\subsubsection{$U(1)_A$ violation in instanton background}
+For $U(1)_A$ symmetry, there is a source of explicit $U(1)_A$ violation in addition to spontaneous symmetry breaking by quark bilinear condensate.
+
+First, because of chiral anomaly, the axial current $J_A^\mu$ is not conserved as \cite{tHooft:1976rip, tHooft:1976snw}
+\begin{align}
+    \partial_\mu J_A^\mu = -\frac{N_f g^2}{16\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu},
+\end{align}
+where $N_f$ is the number of flavors.
+In this instanton background, $U(1)_A$ symmetry is explicitly broken by the chiral anomaly, and thus, we can have an extra $U(1)_A$ breaking effect in QCD.
+
+\subsection{$U(1)_A$ violation in chiral Lagrangian}
+The Lagrangian of QCD with three light quarks is
+\begin{align}
+    {\cal L} = \sum_{q=u,d,s} \left[ i\bar q \gamma^\mu D_\mu q - m_q \bar q q \right]
+\end{align}
+In the limit of $m_u, m_d, m_s \to 0$, we have only the kinetic term of the quarks and the Lagrangian is invariant $U(3)_L \times U(3)_R$ chiral symmetry as eq.~\eqref{eq:chiral symmetry}.
+Thus, there should be 9 massless NG bosons corresponding to generators of the broken symmetries.
+
+Those spontaneously broken symmetries are actually \textit{explicitly} broken by the quark mass terms. Since the light quark masses are smaller than $\Lambda_{\rm QCD}$, those mass terms can be regarded as a perturbation. In this picture, we should have 9 NG bosons whose mass squared is proportional to the quark masses.
+
+In this section, we will see that \textit{this picture does not work}. We will see that there should be an \textit{extra} source of $U(1)_A$ explicit breaking in addition to the quark masses \cite{Weinberg:1975ui}.
+We compare two EFTs with different symmetries:
+\begin{itemize}
+    \item $SU(3)_L \times SU(3)_R \times U(1)_V \times U(1)_A$
+    \item $SU(3)_L \times SU(3)_R \times U(1)_V$
+\end{itemize}
+We will see that the EFT with $U(1)_A$ fails to reproduce the observed spectrum of NG bosons, but the EFT without $U(1)_A$ does not have this problem.
+
+
+\subsubsection{EFT with $SU(3)_L \times SU(3)_R \times U(1)_V \times U(1)_A$}
+First, let us assume there is no extra $U(1)_A$ explicit breaking, and the spontaneous symmetry breaking pattern is given by $SU(3)_L \times SU(3)_R \times U(1)_V \times U(1)_A \to SU(3)_V \times U(1)_V$, and then we will see the mass spectrum of NG bosons from this assumption.
+
+There are 9 broken generators, so we have 9 NG bosons. To write down the effective Lagrangian for NG bosons, we introduce a $3\times 3$ unitary matrix $\Sigma$. $\Sigma$ transforms under $U(3)_L \times U(3)_R$ as
+\begin{align}
+    \Sigma \to U_L \Sigma U_R^\dagger,
+\end{align}
+Then, $U(3)_L \times U(3)_R$ invariant Lagrangian for $\Sigma$ is given by
+\begin{align}
+    {\cal L}_{\rm kin.} = \frac{1}{4} f_\pi^2 {\rm tr}[(\partial_\mu \Sigma)(\partial^\mu \Sigma^\dagger)] + \frac{1}{4} f'^2 (\partial_\mu \det \Sigma)(\partial^\mu \det \Sigma^\dagger),
+\end{align}
+where $f_\pi \simeq 93~{\rm MeV}$ is the pion decay constant.
+
+$U(3)_L \times U(3)_R$ symmetry is explicitly broken by quark mass term. The quark mass matrix $M = {\rm diag}(m_u, m_d, m_s)$ can be regarded as a spurion field which transforms under $U(3)_L \times U(3)_R$ as
+\begin{align}
+    M \to U_R M U_L^\dagger.
+\end{align}
+Then, the leading order term of $M$ in the effective Lagrangian is given by
+\begin{align}
+    {\cal L}_m = -V =\frac{1}{2} f_\pi^2 B_0 {\rm tr}[M \Sigma + M^\dagger \Sigma^\dagger] \label{eq:chpt potential}
+\end{align}
+
+$\Sigma$ can be written in terms of NG bosons as
+\begin{align}
+    \Sigma = \exp\left( \frac{i}{f_\pi} \Phi  + \frac{i}{f_{\eta'}} \sqrt{\frac{2}{3}} \eta' \right)
+\end{align}
+where $f_{\eta'} \equiv \sqrt{f_\pi^2 + 3f'^2}$ and 
+\begin{align}
+    \Phi = 
+        \left(\begin{array}{ccc}
+            \pi_0 + \eta/\sqrt{3} & \sqrt{2} \pi_+         & \sqrt{2} K_+\\
+            \sqrt{2} \pi_-        & -\pi^0 + \eta/\sqrt{3} & \sqrt{2} K_0\\
+            \sqrt{2} K_-          & \sqrt{2}\bar{K_0}      & -2\eta/\sqrt{3}
+        \end{array}\right).
+\end{align}
+
+$V$ can be expanded as
+\begin{align}
+    V =& -f_\pi^2 B_0 (m_u+m_d+m_s) \nonumber\\
+    & + (m_u+m_d)B_0 \pi_+ \pi_- + (m_u+m_s)B_0 K_+ K_- + (m_d+m_s)B_0 K_0 \bar K_0 + \frac{1}{2} v_0^T M_0^2 v_0 \nonumber\\
+    & + \cdots
+\end{align}
+where $v_0$ and $M_0^2$ are defined as
+\begin{align}
+    v_0 &= \left(\begin{array}{c} \pi_0 \\ \eta \\ \eta' \end{array}\right), \\
+    M_0^2 &= B_0 \left(\begin{array}{ccc}
+        m_u + m_d & \frac{1}{\sqrt 3}(m_u-m_d) & \sqrt{\frac{2}{3}} \frac{f_\pi}{f_{\eta'}}(m_u-m_d) \\
+        \frac{1}{\sqrt 3}(m_u-m_d) & \frac{1}{3}(m_u+m_d+4m_s) & \frac{\sqrt 2}{3} \frac{f_\pi}{f_{\eta'}} (m_u+m_d-2m_s) \\
+        \sqrt{\frac{2}{3}} \frac{f_\pi}{f_{\eta'}}(m_u-m_d) & \frac{\sqrt 2}{3} \frac{f_\pi}{f_{\eta'}} (m_u+m_d-2m_s) & \frac{2}{3}\frac{f_\pi^2}{{f_{\eta'}}^2}(m_u+m_d+m_s) \\
+    \end{array}\right).
+\end{align}
+
+Let us discuss the mass spectrum in the limit of $m_u \sim m_d \ll m_s$. In this limit,
+\begin{align}
+    M_0^2 &= m_s B_0 \left(\begin{array}{ccc}
+        0 & 0 & 0 \\
+        0 & \frac{4}{3} & -\frac{2\sqrt 2}{3} \frac{f_\pi}{f_{\eta'}} \\
+        0 & -\frac{2\sqrt 2}{3} \frac{f_\pi}{f_{\eta'}} & \frac{2}{3} \frac{f_\pi^2}{{f_{\eta'}}^2} \\
+    \end{array}\right) + {\cal O}(m_{u,d}B_0).
+\end{align}
+The mass eigenstates at the leading order are described as the following unit vectors:
+\begin{align}
+    v_1 &= \left(\begin{array}{c} 1 \\ 0 \\ 0 \end{array}\right), \\
+    v_2 &= \frac{1}{\sqrt{f_\pi^2 + 2{f_{\eta'}}^2}} \left(\begin{array}{c} 0 \\ f_\pi \\ \sqrt{2}f_{\eta'} \end{array}\right), \\
+    v_3 &= \frac{1}{\sqrt{f_\pi^2 + 2{f_{\eta'}}^2}} \left(\begin{array}{c} 0 \\ -\sqrt{2}f_{\eta'} \\ f_\pi \end{array}\right).
+\end{align}
+The mass eigenvalue for $v_1$ and $v_2$ are ${\cal O}(m_{u,d}B_0)$, and thus, they are light states. However, the mass eigenvalue for $v_3$ is ${\cal O}(m_s B_0)$, and thus, it is a heavy state.
+The mass eigenvalue for $v_3$ is given by
+\begin{align}
+    m_3^2 = \left( \frac{4}{3} + \frac{2}{3} \frac{f_\pi^2}{{f_{\eta'}}^2} \right) m_s B_0 + {\cal O}(m_{u,d}B_0).
+\end{align}
+To discuss the mass eigenvalue for $v_1$ and $v_2$, let us define $\tilde M_0^2$ as
+\begin{align}
+    \tilde M_0^2
+    =
+    \left(\begin{array}{cc}
+        m_{11}^2 & m_{12}^2 \\
+        m_{21}^2 & m_{22}^2 
+    \end{array}\right),
+\end{align}
+where
+\begin{align}
+    m_{11}^2 &= v_1^T M_0^2 v_1 = (m_u + m_d)B_0, \\
+    m_{12}^2 = m_{21}^2 &= v_1^T M_0^2 v_2 = \frac{\sqrt{3}(m_u-m_d)B_0}{\sqrt{1 + 2(f_{\eta'}^2/f_\pi^2)}}, \\
+    m_{22}^2 &= v_2^T M_0^2 v_2 = \frac{3(m_u+m_d)B_0}{1+2(f_{\eta'}^2/f_\pi^2)}.
+\end{align}
+By neglecting $m_{12}^2$, $m_{11}^2$ corresponds to $m_\pi^2$, and $m_{22}^2$ is also a mass eigenvalue as
+\begin{align}
+    m_{22}^2 \simeq \frac{3}{1 + 2(f_{\eta'}^2/f_\pi^2)} (m_u+m_d)B_0 \leq 3 m_\pi^2 \sim (240~{\rm MeV})^2.
+\end{align}
+However, we know $m_\eta \simeq 548~{\rm MeV}$ and $m_{\eta'} \simeq 958~{\rm MeV}$. There is no such light state as $m_2$ in the observed spectrum!
+
+
+\subsubsection{EFT with $SU(3)_L \times SU(3)_R \times U(1)_V$ : an extra $U(1)_A$ breaking}
+We have seen that the EFT with $SU(3)_L \times SU(3)_R \times U(1)_V \times U(1)_A$ predicts a light pseudoscalar meson which is not observed in the real world.
+
+Let us add an extra $U(1)_A$ breaking term to the effective Lagrangian by hand as
+\begin{align}
+    {\cal L}_{\rm break} = -\frac{1}{2} M^2 \eta'^2 = -\frac{1}{12} f_{\eta'}^2 M^2 ({\rm arg}\det \Sigma)^2.
+\end{align}
+This term explicitly breaks $U(1)_A$ symmetry but preserves $SU(3)_L \times SU(3)_R \times U(1)_V$ symmetry. 
+
+By assuming $M^2 \gg m_s B_0$, we can integrate out $\eta'$. We can simply write $\Sigma$ as
+\begin{align}
+    \Sigma = \exp\left( \frac{i}{f_\pi} \Phi \right),
+\end{align}
+and then, $V$ in eq.~\eqref{eq:chpt potential} can be expanded as
+\begin{align}
+    V =& -f_\pi^2 B_0 (m_u+m_d+m_s) \nonumber\\
+    & + (m_u+m_d)B_0 \pi_+ \pi_- + (m_u+m_s)B_0 K_+ K_- + (m_d+m_s)B_0 K_0 \bar K_0 + \frac{1}{2} B_0 v_0^T M_0^2 v_0 \nonumber\\
+    & + \cdots,
+\end{align}
+where $v_0$ and $M_0^2$ are defined as
+\begin{align}
+    v_0 &= \left(\begin{array}{c} \pi_0 \\ \eta \end{array}\right), \\
+    M_0^2 &= \left(\begin{array}{cc}
+        m_u + m_d & \frac{1}{\sqrt 3}(m_u-m_d) \\
+        \frac{1}{\sqrt 3}(m_u-m_d) & \frac{1}{3}(m_u+m_d+4m_s)
+    \end{array}\right).
+\end{align}
+
+In the limit of $m_u \sim m_d \ll m_s$, the mass eigenstates are approximately given by $\pi_0$ and $\eta$. Then, the mass of NG bosons are given by
+\begin{align}
+    m_{\pi_0}^2 = m_{\pi_\pm}^2 &= (m_u + m_d)B_0, \\
+    m_{K_\pm}^2 &= (m_u + m_s)B_0, \\
+    m_{K_0}^2 &= (m_d + m_s)B_0, \\
+    m_{\eta}^2 &= \frac{1}{3}(m_u + m_d + 4 m_s)B_0
+\end{align}
+We can see that this mass spectrum of NG bosons satisfy the following relation:
+\begin{align}
+    3m_\eta^2 + m_\pi^2 = 2 m_{K_\pm}^2 + 2 m_{K_0}^2
+\end{align}
+This is so-called Gell-Mann--Okubo formula \cite{Gell-Mann:1961omu, Okubo:1961jc,Okubo:1962zzc}.
+The observed values of NG boson masses are
+$m_{\pi_\pm} \simeq 140~{\rm MeV}$, 
+$m_{\pi_0} \simeq 135~{\rm MeV}$, 
+$m_{\eta} \simeq 548~{\rm MeV}$, 
+$m_{K_\pm} \simeq 494~{\rm MeV}$, 
+and $m_{K_0} \simeq 498~{\rm MeV}$. Then, we obtain
+\begin{align}
+    \frac{3m_\eta^2 + m_\pi^2 }{ 2 m_{K_\pm}^2 + 2 m_{K_0}^2} \simeq 0.93.
+\end{align}
+Thus, the Gell-Mann--Okubo formula is satisfied with good accuracy. This fact strongly supports the validity of the effective theory for NG bosons.
+
+
+
+
+\subsection{Strong CP violation in chiral Lagrangian}
+As we have learned so far, the QCD Lagrangian in the chiral limit ($m=0$) has $U(1)_A$ symmetry at the classical level.
+However, this $U(1)_A$ symmetry is explicitly broken by the non-perturbative effect of QCD. For example, in the instanton background, $U(1)_A$ symmetry is explicitly broken by the chiral anomaly.
+This $U(1)_A$ breaking effect is important to reproduce the observed spectrum of NG bosons.
+
+In this section, we will see that, once we accept the existence of this $U(1)_A$ explicit breaking effect, a CP violating parameter in QCD becomes physical and the strong CP problem arises if there is no massless quark.
+
+\subsubsection{EFT with CP violation}
+Now let us discuss the effect of nonzero $\bar\theta$. See e.g. ref.~\cite{Crewther:1979pi,Pich:1991fq}.
+It is convenient to eliminate $\theta$ term by chiral rotation of quark fields.
+Since $\bar\theta$ is invariant under such a redefinition, we obtain the following Lagrangian:
+\begin{align}
+    {\cal L} =  - \frac{1}{4} G_{\mu\nu}^a G^{a\mu\nu} + \sum_q \left[ i \bar q \gamma^\mu D_\mu q - ( \bar q_R m_q e^{i\theta_q} q_L + h.c.) \right],
+\end{align}
+where
+\begin{align}
+    \bar\theta = \theta_u + \theta_d + \theta_s.
+\end{align}
+
+Let us discuss the VEV of $\Sigma$. By assuming the form of $\Sigma$ as
+\begin{align}
+    \Sigma = {\rm diag}(e^{i\varphi_u}, e^{i\varphi_d}, e^{i\varphi_s}),
+\end{align}
+where $\varphi_u + \varphi_d + \varphi_s = 0$.
+We obtain the following potential for $\varphi_q$:
+\begin{align}
+    V = -f_\pi^2 B_0 \sum_q m_q \cos(\theta_q + \varphi_q).
+\end{align}
+
+Let us minimize $V$ with respect to $\varphi_q$ under the constraint $\sum_q \varphi_q = 0$ by using Lagrange multiplier $\lambda$.
+\cite{Dashen:1970et,Nuyts:1971az}
+\begin{align}
+    \frac{\partial V}{\partial \varphi_q} - \lambda
+    = f_\pi^2 B_0 m_q \sin(\theta_q + \varphi_q) - \lambda = 0.
+\end{align}
+By assuming $\varphi_q,~\theta_q \ll 1$, we obtain
+\begin{align}
+    \varphi_q = -\theta_q + \frac{\lambda}{f_\pi^2 B_0 m_q}.
+\end{align}
+From $\sum_q \varphi_q = 0$, we obtain
+\begin{align}
+    \lambda = f_\pi^2 B_0 m_* \bar\theta,
+\end{align}
+where $m_*$ is defined as
+\begin{align}
+    m_* = \left( \frac{1}{m_u} + \frac{1}{m_d} + \frac{1}{m_s} \right)^{-1}
+\end{align}
+Thus, $\varphi_q$ is given by
+\begin{align}
+    \varphi_q = -\theta_q + \frac{m_*}{m_q} \bar\theta.
+\end{align}
+We can see that $\langle \Sigma \rangle \neq I$ in general.
+
+It is useful to take a basis in which $\varphi_q = 0$ so that $\langle \Sigma \rangle = I$. In this basis, $\theta_q$ is given by
+\begin{align}
+    \theta_u = \frac{m_*}{m_u} \bar\theta, \qquad
+    \theta_d = \frac{m_*}{m_d} \bar\theta, \qquad
+    \theta_s = \frac{m_*}{m_s} \bar\theta,
+\end{align}
+Note that, in this basis,
+\begin{align}
+    m_u \theta_u = m_d \theta_d = m_s \theta_s.
+\end{align}
+
+To summarize, for nonzero $\bar\theta$, the following chiral Lagrangian is convenient:
+\begin{align}
+    {\cal L} &= \frac{1}{4}f_\pi^2 {\rm tr}[(\partial_\mu \Sigma) (\partial^\mu \Sigma^\dagger)] + \frac{1}{2} f_\pi^2 B_0 {\rm tr}[M \Sigma + M^\dagger \Sigma^\dagger], \label{eq:chpt nonzero theta}\\
+    M &= {\rm diag}(m_u \exp(im_* \bar\theta/m_u), m_d \exp(im_* \bar\theta/m_d), m_s \exp(im_* \bar\theta/m_s)).
+\end{align}
+For $\bar\theta \ll 1$, we obtain
+\begin{align}
+M \simeq {\rm diag}(m_u,m_d,m_s) + i m_* \bar\theta I,
+\end{align}
+and $\langle \Sigma \rangle = I$ is satisfied.
+
+
+
+\subsubsection{$\eta\to\pi\pi$}
+Let us expand the quark mass dependent term in the effective Lagrangian.
+$\Sigma = \exp\left( i \Phi / f_\pi \right)$, $M \to M + i m_* \bar\theta I$. Then, we obtain \cite{Shifman:1979if,Pich:1991fq,Jarlskog:1995ww}
+\begin{align}
+    {\cal L}
+    &\ni \frac{1}{2} f_\pi^2 B_0 {\rm tr}[(M + i m_* \bar\theta I) \Sigma + (M - i m_* \bar\theta I) \Sigma^\dagger] \nonumber\\
+    &\simeq f_\pi^2 B_0 {\rm tr}M - \frac{1}{2} B_0 {\rm tr}[M \Phi^2] + \frac{m_* \bar\theta B_0}{6 f_\pi} {\rm tr}[\Phi^3] + \cdots.
+\end{align}
+Thus, we obtained CP violating cubic interaction term. In particular, there are the following interaction terms that contribute to the CP violating decay $\eta$ decays:
+\begin{align}
+{\cal L} \ni \frac{2\bar\theta m_* B_0}{\sqrt{3}f_\pi} \left( \eta \pi_+ \pi_- + \frac{1}{2} \eta \pi_0^2 \right)
+\end{align}
+This induces the CP violating decay $\eta \to \pi_+ \pi_-$, which is constrained as ${\rm Br}(\eta \to \pi_+ \pi_-) < 4.4 \times 10^{-6}$ \cite{KLOE-2:2020ydi}.
+By using the chiral Lagrangian, we can estimate the branching fraction of $\eta \to \pi_+ \pi_-$ as \cite{Jarlskog:1995ww}
+\begin{align}
+    {\rm Br}(\eta \to \pi_+ \pi_-) \sim 10^2 \times \bar\theta^2.
+\end{align}
+From this measurement, we obtain $|\bar\theta| \lesssim 10^{-4}$.
+
+\subsection{Neutron EDM and chiral Lagrangian with baryon}\label{sec:neutron EDM in chpt}
+The most important consequence of nonzero $\bar\theta$ is the neutron EDM.
+Here we calculate the neutron EDM induced from nonzero $\bar\theta$ \cite{Crewther:1979pi,Pich:1991fq}.
+For details, see \S 83 and \S 94 in Srednicki's book and ``Weak Interactions and Modern Particle Theory'' by Georgi.
+
+Let us discuss chiral Lagrangian with two flavors of quarks. The nucleon doublet $N$, and the meson field $\Sigma$ are defined as
+\begin{align}
+    N = \left(\begin{array}{c} p \\ n \end{array}\right), \qquad
+    \Sigma = \exp\left( \frac{i}{f_\pi} \Phi\right), \qquad
+    \Phi = \left(\begin{array}{cc} \pi^0 & \sqrt{2}\pi^+ \\ \sqrt{2}\pi^- & -\pi^0 \end{array}\right).
+\end{align}
+We assume left-handed and right-handed nucleon fields $N_L \equiv P_L N$ and $N_R \equiv P_R N$ is transformed under $SU(2)_L \times SU(2)_R$ as\footnote{
+    Note that the nucleon field in CCWZ prescription \cite{Coleman:1969sm, Callan:1969sn} is transformed as $N \to h N$, and the NG boson fields $\xi_L$ and $\xi_R$ are transformed as
+    $\xi_L \to g_L \xi_L h^\dagger$ and $\xi_R \to g_R \xi_R h^\dagger$.
+    The meson field $\Sigma$ and the nucleon field $N$ defined in eq.~\eqref{eq:nucleon transformation} is written as
+    \begin{align}
+        N = (\xi_L P_L N + \xi_R P_R N)|_{\rm CCWZ}, \qquad
+        \Sigma = \xi_L \xi_R^\dagger|_{\rm CCWZ}.
+    \end{align}
+}
+\begin{align}
+    N_L \to g_L N_L, \qquad
+    N_R \to g_R N_R. \label{eq:nucleon transformation}
+\end{align}
+Then, by requiring the invariance under parity transformation,
+\begin{align}
+    N_L \leftrightarrow N_R, \qquad
+    \Sigma \leftrightarrow \Sigma^\dagger, \qquad
+    M \leftrightarrow M^\dagger,
+\end{align}
+we obtain the quark mass $M$ independent term as
+\begin{align}
+    {\cal L}_0 =& i \bar N \gamma^\mu \partial_\mu N - m_N (\bar N_R \Sigma^\dagger N_L + \bar N_L \Sigma N_R) \nonumber\\
+    &- \frac{1}{2} (g_A-1) i (\bar N_L \gamma^\mu \Sigma (\partial_\mu \Sigma^\dagger) N_L + \bar N_R \gamma^\mu \Sigma^\dagger (\partial_\mu \Sigma) N_R) \label{eq:chpt baryon LO}
+\end{align}
+%
+${\cal O}(M^1)$ terms are given by
+\begin{align}
+    {\cal L}_1
+    =& -c_1 (\bar N_R M^\dagger N_L + \bar N_L M N_R) - c_2 (\bar N_R \Sigma^\dagger M \Sigma^\dagger N_L + \bar N_L \Sigma M^\dagger \Sigma N_R) \nonumber\\
+    & - c_3 {\rm tr}[M \Sigma^\dagger + M^\dagger \Sigma] (\bar N_R \Sigma^\dagger N_L + \bar N_L \Sigma N_R) \nonumber\\
+    & - c_4 {\rm tr}[M \Sigma^\dagger - M^\dagger \Sigma] (\bar N_R \Sigma^\dagger N_L - \bar N_L \Sigma N_R). \label{eq:chpt baryon NLO}
+\end{align}
+%
+It is convenient to redefine $N_L$ and $N_R$ as
+\begin{align}
+    N_L = \Sigma^{1/2} {\cal N}_L, \qquad
+    N_R = \Sigma^{-1/2} {\cal N}_R.
+\end{align}
+Then, eq.~\eqref{eq:chpt baryon LO} can be rewritten as
+\begin{align}
+    {\cal L}_0 =& i \bar {\cal N} \gamma^\mu \partial_\mu {\cal N} - m_N \bar {\cal N} {\cal N}
+    + \frac{g_A}{2 f_\pi} \bar {\cal N} \gamma^\mu \gamma^5 (\partial_\mu\Phi) {\cal N} + \cdots \label{eq:chpt nucleon pion}
+\end{align}
+Let us expand $M$ as
+\begin{align}
+    M \to \hat M + i m_* \bar\theta I,
+\end{align}
+where $m_* = (1/m_u + 1/m_d)^{-1}$ and $\hat M = {\rm diag}(m_u,m_d)$.
+Then, we obtain $\bar\theta$-dependent terms in eq.~\eqref{eq:chpt baryon NLO} as\footnote{We also obtain complex baryon mass term $\sim i\bar\theta \bar{\cal N}\gamma^5 {\cal N}$ but this gives subdominant contribution to neutron EDM.}
+\begin{align}
+    {\cal L}_1 \ni -\frac{m_*\bar\theta}{f_\pi} (c_1 + c_2) \bar {\cal N} \Phi {\cal N} + i m_* \bar\theta (-c_- +4c_4) \bar{\cal N}\gamma_5 {\cal N}, \label{eq:chpt nucleon pion CPV}
+\end{align}
+where $c_\pm = c_1 \pm c_2$.
+Thus, the relevant interaction terms for neutron EDM in eqs.~\eqref{eq:chpt nucleon pion} and \eqref{eq:chpt nucleon pion CPV} are given by
+\begin{align}
+    {\cal L} \ni
+    \frac{g_A}{\sqrt{2}f_\pi} ( (\partial_\mu \pi^-) \bar n \gamma^\mu \gamma^5 p + (\partial_\mu \pi^+) \bar p \gamma^\mu \gamma^5 n)
+    -\frac{\sqrt{2}m_* \bar\theta c_+}{f_\pi} (\pi^- \bar n p + \pi^+ \bar p n) + \cdots
+\end{align}
+$c_+$ is determined by comparing three-flavor chiral Lagrangian with the observed baryon masses as
+\begin{align}
+    c_+ = \frac{m_\Xi - m_\Sigma}{2(m_K^2 - m_\pi^2)} \frac{m_\pi^2}{\bar m} \simeq 1.7.
+\end{align}
+$d_n$ can be evaluated by the one-loop diagram with charged pion loop. In particular, the chiral log contribution is given by
+\begin{align}
+    d_n
+    \sim \frac{e}{16\pi^2} \frac{m_* \bar\theta c_+}{f_\pi} \frac{g_A m_N}{f_\pi} \frac{1}{m_N} \log\frac{m_N}{m_\pi}
+    \sim e\bar\theta \times \frac{c_+ g_A m_*}{(4\pi f_\pi)^2} \log\frac{m_N}{m_\pi}
+    \sim \bar\theta \times 10^{-16} ~e~{\rm cm}.
+\end{align}
+Note that $d_n$ contains an unknown counterterm. So we should understand that this estimation has ${\cal O}(1)$ uncertainty.
+
+
+\subsection{More on neutron EDM}
+\begin{table}[t]
+\centering
+\begin{tabular}{l|l}
+    Ref. & \\
+    \hline
+    Dragos et al (2019) \cite{Dragos:2019oxn} & $d_n = \bar\theta \times (-1.52 \pm 0.71) \times 10^{-16}~e~{\rm cm}$ \\
+    Alexandrou et al (2020) \cite{Alexandrou:2020mds} & $|d_n| = \bar\theta \times (-0.9 \pm 2.4) \times 10^{-16}~e~{\rm cm}$ \\
+    Bhattacharya et al (2021) \cite{Bhattacharya:2021lol} & $d_n = \bar\theta \times (-3 \pm 7 \pm 20) \times 10^{-16}~e~{\rm cm}$ \\
+    $\chi$QCD (2023) \cite{Liang:2023jfj} & $d_n = \bar\theta \times (-1.48 \pm 0.14 \pm 0.31) \times 10^{-16}~e~{\rm cm}$ \\\hline
+    Hisano et al (2012) \cite{Hisano:2012sc} & $d_n = \bar\theta \times 0.4 \times 10^{-16}~e~{\rm cm}$?\\
+    Ema et al (2024) \cite{Ema:2024vfn} & $d_n = \bar\theta \times (0.5 - 1.5) \times 10^{-16}~e~{\rm cm}$
+\end{tabular}
+\caption{Lattice QCD and QCD sum rule results for neutron EDM induced by $\bar\theta$ term.}\label{tab:nedm lattice}
+\end{table}
+%
+So far we have estimated the neutron EDM induced by $\bar\theta$ term by using the chiral Lagrangian. We have seen that one-loop diagram with charged pion loop gives the neutron EDM. However, this calculation suffers from the uncertainty of counter term and it is not possible to predict with ${\cal O}(1)$ accuracy.
+
+In table \ref{tab:nedm lattice}, we summarize the results of lattice QCD calculations and QCD sum rules for neutron EDM induced by $\bar\theta$ term. We can see that the results still have ${\cal O}(1)$ uncertainty, but they are more or less consistent with the estimation by chiral Lagrangian, and
+\begin{align}
+    d_n \sim \bar\theta \times 10^{-16}~e~{\rm cm}.
+\end{align}
+
+\subsection{Summary of this section}
+In this section, we analyzed the chiral Lagrangian to discuss physics of hadrons. We found that
+\begin{itemize}
+    \item In addition to the quark mass terms, we need to add a $U(1)_A$ breaking term. Then, we can reproduce the correct spectrum of NG bosons, which is consistent with the Gell-Mann--Okubo formula.
+    \item If we do not add $U(1)_A$ breaking term, we predict a light pseudoscalar meson whose mass is smaller than $\sim 240~{\rm MeV}$ in addition to $\pi^0$. Such a meson is not observed in the real world.
+    \item Once we accept the existence of $U(1)_A$ breaking effect, a CP violating parameter $\bar\theta$ inevitably becomes physical and induces CP violating processes such as $\eta \to \pi\pi$ and neutron EDM.
+\end{itemize}
+In the next section, we will discuss CP violation in the Standard Model. Actually, the situation becomes worse in the Standard Model because there is another source of CP violation, the CP violating phase in the CKM matrix. We will see that the smallness of $\bar\theta$ is quite unnatural in the Standard Model.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{CP violation in the Standard Model}\label{sec:cpv sm}
+Let us discuss CP violation in the Standard Model. As we have seen that there is the strong CP problem in QCD, i.e., we could write CP violating term in the Lagrangian but somehow the nature respects CP symmetry.
+Actually, the situation becomes much worse in the Standard Model. This is because there is another source of CP violation in the Standard Model, and indeed, we know that its effect is sizable! In this sense, the smallness of $\bar\theta$ in QCD is quite unnatural. We need to have a hierarchy between two CP violating parameters, $\bar\theta$ and the CP violating phase in the CKM matrix. However, there is no reason for such a hierarchy in the Standard Model. In this section, we will discuss the strong CP problem in the Standard Model.
+The following textbooks are useful to understand this section.
+\begin{itemize}
+\item Peskin-Schroeder \cite{Peskin:1995ev} \S 20
+\item Srednicki \cite{Srednicki:2007qs} \S 87, \S 88, \S 89
+\end{itemize}
+
+
+\subsection{The number of parameters in the Standard Model}
+\begin{table}
+\centering
+\begin{tabular}{c|ccc}
+& $SU(3)_C$ & $SU(2)_L$ & $U(1)_Y$ \\\hline
+$q_{L,i} = (u_{L,i}, d_{L,i})$ & $3$ & $2$ & $1/6$ \\
+$u_{R,i}$ & $3$ & $1$ & $2/3$ \\
+$d_{R,i}$ & $3$ & $1$ & $-1/3$ \\
+$\ell_{L,i}$ & $1$ & $2$ & $-1/2$ \\
+$e_{R,i}$ & $1$ & $1$ & $-1$ \\\hline
+$H$ & $1$ & $2$ & $1/2$
+\end{tabular}
+\caption{Matter content of the Standard Model. $i=1,2,3$ express the generation index.} \label{tab:SM matter content}
+\end{table}
+%
+The Standard Model (SM) is a $SU(3)_C \times SU(2)_L \times U(1)_Y$ gauge theory with the following matter content shown in table \ref{tab:SM matter content}.
+The SM has three generations of quarks and leptons.
+
+Let us write down the most generic renormalizable Lagrangian of the Standard Model as we did in the QED and QCD cases. The Lagrangian of the Standard Model is given by
+\begin{align}
+    {\cal L} = {\cal L}_{\rm kin} + {\cal L}_{\rm yuk} + {\cal L}_H + {\cal L}_\theta,
+\end{align}
+where ${\cal L_{\rm kin}}$ is the kinetic term of gauge bosons, quarks, leptons, and Higgs field. ${\cal L}_{\rm yuk}$, ${\cal L}_H$, and ${\cal L}_\theta$ are given by
+\begin{align}
+    {\cal L}_{\rm yuk} &= -y_{u,ij} \bar u_{R,i} \tilde H^\dagger q_{L,j}  - y_{d,ij} \bar d_{R,i} H^\dagger q_{L,j} - y_{e,ij} \bar e_{R,i} H^\dagger \ell_{L,j} + {\rm h.c.}, \label{eq:SM yukawa}\\
+    {\cal L}_H &= -\lambda|H|^4 + \mu^2 |H|^2, \\
+    {\cal L}_\theta &= \frac{\theta_Y g'^2}{16\pi^2} B_{\mu\nu} \tilde B^{\mu\nu} + \frac{\theta_2 g_2^2}{32\pi^2} W_{\mu\nu}^a \tilde W^{a\mu\nu} + \frac{\theta g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}.
+\end{align}
+where $H$ is a $SU(2)_L$ doublet Higgs field with $Y=+1/2$ and $\tilde H = i\sigma^2 H^*$.
+
+How many parameters does the Standard Model have? The Yukawa matrices can be rewritten by singular value decomposition as
+\begin{align}
+    y_u = U_{u_R} \hat y_u U_{u_L}^\dagger, \qquad
+    y_d = U_{d_R} \hat y_d U_{d_L}^\dagger, \qquad
+    y_e = U_{e_R} \hat y_e U_{e_L}^\dagger,
+\end{align}
+We can define the Cabibbo--Kobayashi--Maskawa (CKM) matrix as
+\begin{align}
+    V_{\rm CKM} = U_{u_L}^\dagger U_{d_L}.
+\end{align}
+$3\times 3$ unitary matrix has 9 parameters, but we can eliminate 5 parameters by rephasing of quark fields. Thus, the CKM matrix has 4 physical parameters.
+
+Let us discuss the $\theta$ term in the Standard Model. 
+First $\theta_Y$ cannot have any physical effect as we have discussed in the QED case. How about $\theta_2$? Let us consider the phase rotation by lepton number as
+\begin{align}
+    \ell_{L,i} \to e^{i\alpha} \ell_{L,i}, \qquad
+    e_{R,i} \to e^{i\alpha} e_{R,i}.
+\end{align}
+${\cal L}_{\rm Yuk}$ and ${\cal L}_H$ are invariant under this phase rotation, but ${\cal L}_\theta$ is not invariant because of chiral anomaly. By using Fujikawa method, we can find the following shift of $\theta$ parameters:
+\begin{align}
+    \theta_Y \to \theta_Y + \frac{1}{2} N_g \alpha, \qquad
+    \theta_2 \to \theta_2 -  N_g \alpha,
+\end{align}
+where $N_g = 3$ is the number of generations.
+Thus, $\theta_2$ can be eliminated by the lepton number phase rotation. Thus, both $\theta_Y$ and $\theta_2$ do not have any physical effect.
+%
+$\theta$ for gluon can be shifted by a chiral rotation of quark field such as $u_R \to e^{i\alpha} u_R$. However, this necessarily shift the phase of the determinant of the Yukawa matrices. Then, we can find that $\bar\theta$ defined below is invariant under the chiral rotation, namely, $\bar\theta$ is a physical parameter.
+\begin{align}
+    \bar\theta = \theta + {\rm arg} \det y_u y_d.
+\end{align}
+On the other hand, $\bar\theta$ cannot be eliminated. Thus, $\bar\theta$ is a physical parameter in the Standard Model.
+
+To summarize, the Standard Model has 19 physical parameters.
+\begin{itemize}
+    \item 3 gauge coupling constants ($g_1$, $g_2$, $g_3$)
+    \item 2 Higgs potential parameters ($\lambda$, $\mu^2$)
+    \item 9 fermion masses ($m_u$, $m_d$, $m_s$, $m_c$, $m_b$, $m_t$, $m_e$, $m_\mu$, $m_\tau$)
+    \item 4 parameter in CKM matrix
+    \item 1 $\bar\theta$ parameter in QCD
+\end{itemize}
+
+\subsection{CP violation in the Standard Model}
+In the SM, P is maximally violated because only left-handed quarks and leptons have $SU(2)_L$ gauge interaction.
+
+Let us discuss CP symmetry. We define CP transformation as
+\begin{align}
+    q_{i}(t,\vec x) &\to i \gamma^0 \gamma^2 q_{i}^*(t, -\vec x).
+\end{align}
+We can see that ${\cal L}$ is invariant under CP if $y_u$, $y_d$, and $y_e$ are real and $\theta=0$.
+This corresponds to real $V_{\rm CKM}$ and $\bar\theta=0$.
+
+\subsubsection{CP violation in the CKM matrix}
+CKM matrix can be written as
+\begin{align}
+    V_{\rm CKM} = \left(\begin{array}{ccc}
+        V_{ud} & V_{us} & V_{ub} \\
+        V_{cd} & V_{cs} & V_{cb} \\
+        V_{td} & V_{ts} & V_{tb}
+    \end{array}\right).
+\end{align}
+Under $q \to q' = e^{i\alpha} q$, the CKM matrix is transformed as
+\begin{align}
+    V_{\rm CKM} \to {\rm diag}(e^{i\alpha_u}, e^{i\alpha_c}, e^{i\alpha_t}) V_{\rm CKM} {\rm diag}(e^{-i\alpha_d}, e^{-i\alpha_s}, e^{-i\alpha_b}).
+\end{align}
+Physical parameter should be invariant under this transformation. Thus, CKM matrix has 4 physical parameters.
+If CKM matrix were real, CKM matrix is real orthogonal matrix, and it can be parametrized by three mixing angles. Thus, the remaining one parameter is a CP violating phase $\delta_{\rm CKM}$.
+
+The components of $V_{\rm CKM}$ has the following hierarchical structure:
+\begin{itemize}
+    \item $|V_{ud}|, |V_{cs}|, |V_{tb}| \sim 1$
+    \item $|V_{us}|, |V_{cd}| \sim 0.22$
+    \item $|V_{cb}|, |V_{ts}| \sim 0.04$
+    \item $|V_{ub}| \sim 4 \times 10^{-3}$, $V_{td} \sim 8 \times 10^{-3}$.
+\end{itemize}
+By using the Cabibbo angle $\lambda \sim 0.22$, we can express the hierarchical structure of $V_{\rm CKM}$ as
+\begin{align}
+    V_{\rm CKM} \sim \left(\begin{array}{ccc}
+        1 & \lambda & \lambda^3 \\
+        \lambda & 1 & \lambda^2 \\
+        \lambda^3 & \lambda^2 & 1
+    \end{array}\right).
+\end{align}
+
+The CKM matrix satisfies the unitarity condition as
+\begin{align}
+    V^\dagger_{\rm CKM} V_{\rm CKM} = 1.
+\end{align}
+Then, we obtain
+\begin{align}
+    (V^\dagger_{\rm CKM} V_{\rm CKM})_{12} = 0 \qquad\to\quad V_{ud}^* V_{us} + V_{cd}^* V_{cs} + V_{td}^* V_{ts} = 0, \\
+    (V^\dagger_{\rm CKM} V_{\rm CKM})_{13} = 0 \qquad\to\quad V_{ud}^* V_{ub} + V_{cd}^* V_{cb} + V_{td}^* V_{tb} = 0, \\
+    (V^\dagger_{\rm CKM} V_{\rm CKM})_{23} = 0 \qquad\to\quad V_{us}^* V_{ub} + V_{cs}^* V_{cb} + V_{ts}^* V_{tb} = 0.
+\end{align}
+
+\begin{align}
+    \alpha \equiv {\rm arg}\left( -\frac{V_{td} V_{tb}^*}{V_{ud} V_{ub}^*} \right), \qquad
+    \beta \equiv {\rm arg}\left( -\frac{V_{cd} V_{cb}^*}{V_{td} V_{tb}^*} \right), \qquad
+    \gamma \equiv {\rm arg}\left( -\frac{V_{ud} V_{ub}^*}{V_{cd} V_{cb}^*} \right).
+\end{align}
+
+According to PDG \cite{ParticleDataGroup:2024cfk}, the CP violating parameters are given as
+\begin{align}
+    \sin 2\beta = 0.709 \pm 0.011, \qquad
+    \alpha = (84.1^{+4.5}_{-3.8})^\circ, \qquad
+    \gamma = (65.7 \pm 3.0)^\circ.
+\end{align}
+Thus, the CKM matrix has ${\cal O}(1)$ CP-violating phase.
+
+\subsubsection{Strong CP violation: $\bar\theta$}
+We can define another CP-violating parameter $\bar\theta$ as
+\begin{align}
+    \bar\theta = \theta + {\rm arg}(\det y_u y_d).
+\end{align}
+$\bar\theta$ induces the CP violation effect in flavor conserving process, while $\delta_{\rm CKM}$ induces the CP violation effect in flavor changing process. The most important observable to probe $\bar\theta$ is the neutron EDM.
+As shown in eq.~\eqref{eq:bound on neutron EDM}, the neutron EDM is bounded by $|d_n| < 1.8 \times 10^{-26}~e\,{\rm cm}$.
+Then, by using the result from section~\ref{sec:neutron EDM in chpt}, we obtain the following bound on $\bar\theta$:
+\begin{align}
+    \bar\theta \lesssim 10^{-10}.
+\end{align}
+
+\subsection{Is up quark massive?}
+As we have shown in the previous section, there are CP-violating effects in QCD. However, all the observables discussed above are proportional to $m_*$, which is given by
+\begin{align}
+    m_* = \left( \frac{1}{m_u} + \frac{1}{m_d} + \frac{1}{m_s} \right)^{-1}.
+\end{align}
+Thus, if there exists a massless quark, $m_*=0$ and all the CP-violating effects in QCD vanish. 
+However, the lightest quark, i.e., the up quark has a nonzero mass $m_u = 2.16 \pm 0.04~{\rm MeV}$ \cite{ParticleDataGroup:2024cfk}.\footnote{This quark mass is defined in the $\overline{\rm MS}$ scheme at $2$ GeV.} See also ref.~\cite{Alexandrou:2020bkd}. This nonzero quark mass is obtained to explain the observed spectrum of hadrons. Thus, we cannot solve the strong CP problem by the existence of massless quark.
+
+\subsection{Summary of this section}
+In the previous section, we have seen that there is the strong CP problem in QCD.
+In this section, we have discussed the strong CP problem in the Standard Model. Indeed, the situation becomes worse in the Standard Model. 
+It has been confirmed that the CP-violating phase in the CKM matrix is ${\cal O}(1)$. Hence, we cannot impose CP symmetry on the Standard Model!
+Before going to the BSM solutions for the strong CP problem, we reformulate the strong CP problem in a language of topological susceptibility in the next section.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Topological susceptibility and the strong CP problem}\label{sec:topological susceptibility}
+So far, we have seen that there exists the strong CP problem in QCD, and the situation becomes worse in the Standard Model. In this section, we reformulate the strong CP problem in a language of topological susceptibility \cite{Shifman:1979if}. This formulation is also useful to classify possible beyond the Standard Model (BSM) solutions for the strong CP problem.
+The following papers are useful to understand this section.
+\begin{itemize}
+\item Shifman-Vainshtein-Zakharov \cite{Shifman:1979if}
+\item Gabadadze-Shifman \cite{Gabadadze:2002ff} \S 2
+\item Pospelov-Ritz \cite{Pospelov:2005pr} \S 2
+\end{itemize}
+
+\subsection{Topological susceptibility}
+The partition function of QCD with $\theta$ term is given by
+\begin{align}
+    Z = \int \prod_{\phi=A,\psi,\bar\psi}{\cal D}\phi \exp\left( i \int d^4 x \left( {\cal L}_{\rm QCD} + \frac{\theta g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu} \right)  \right).
+\end{align}
+It can be written as
+\begin{align}
+    Z = \exp\left( -i VT E(\theta) \right),
+\end{align}
+where $VT$ is four-dimensional volume and $E(\theta)$ is the vacuum energy density of $\theta$-vacuum.
+
+We can see that $\theta$ can be regarded as a source term for $G\tilde G$ operator. Then,
+\begin{align}
+    \langle 0| \frac{g_s^2}{32\pi^2} G^a_{\mu\nu} \tilde G^{a\mu\nu} |0 \rangle = \frac{-i}{VT} \frac{\partial \log Z}{\partial \theta} = -\frac{\partial E}{\partial \theta}.
+\end{align}
+Let us also define the following two-point correlation function:
+\begin{align}
+\chi(p^2) \equiv -i\int d^4x e^{ipx} \langle0|
+T
+~\frac{g_s^2}{32\pi^2} G^a_{\mu\nu} \tilde G^{a\mu\nu}(x)
+~\frac{g_s^2}{32\pi^2} G^b_{\rho\sigma} \tilde G^{b\rho\sigma}(0)
+~|0\rangle. \label{eq:chi definition}
+\end{align}
+%
+Zero-momentum limit of $\chi(p^2)$, $\chi(0)$, is called the topological susceptibility. By using the definition of $E(\theta)$, we can also write $\chi(0)$ as
+\begin{align}
+    \chi(0) = \frac{i}{VT}\frac{\partial^2}{\partial \theta^2} \log Z = \frac{\partial^2 E}{\partial \theta^2}.
+\end{align}
+
+For small $\theta$,
+\begin{align}
+    \frac{\partial E}{\partial \theta} \biggr|_\theta \simeq \theta \frac{\partial^2 E}{\partial \theta^2} \biggr|_{\theta=0},
+\end{align}
+which means
+\begin{align}
+    \langle 0| \frac{g_s^2}{32\pi^2} G^a_{\mu\nu} \tilde G^{a\mu\nu} |0 \rangle |_\theta \simeq -\theta \chi(0)|_{\theta=0}. \label{eq:VEV GGtilde}
+\end{align}
+Thus, nonzero topological susceptibility is a signature of the strong CP problem.
+
+
+\subsection{Shifman-Vainshtein-Zakharov}
+Let us evaluate $\chi(0)$ as Shifman-Vainshtein-Zakharov did in \cite{Shifman:1979if}. For simplicity, we consider two-flavor QCD with $u$ and $d$ quarks.
+The axial current conservation law is broken by the chiral anomaly and quark mass terms as
+\begin{align}
+    \partial_\mu J_A^\mu - 2i m_u \bar u \gamma_5 u - 2i m_d \bar d \gamma_5 d = -\frac{2 g_s^2}{16\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}.
+\end{align}
+Then, the topological susceptibility can be written as
+\begin{align}
+    4 \chi(0) = \chi_1 + \chi_2.
+\end{align}
+where $\chi_1$ and $\chi_2$ are defined as
+\begin{align}
+    \chi_1 &= -\frac{i}{4} \lim_{p\to 0} \int d^4 x e^{ipx} \langle 0 | (\partial_\mu J_A^\mu)(x) \left( \partial_\mu J_A^\mu - 4i \sum_q m_q \bar q \gamma_5 q\right) |0\rangle, \\
+    \chi_2 &= -i\sum_{q,q'} \lim_{p\to 0} \int d^4 x e^{ipx} \langle 0 | \left( im_q \bar q \gamma^5 q \right)(x) \left( im_{q'} \bar q' \gamma^5 q' \right)(0) |0\rangle.
+\end{align}
+Note that $\chi_1$ can be rewritten as
+\begin{align}
+    \chi_1 &= -\frac{i}{4} \lim_{p\to 0} \int d^4 x e^{ipx} \langle 0 | (\partial_\mu J_A^\mu)(x) \left( \frac{-2g_s^2}{16\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu} - 2i \sum_q m_q \bar q \gamma_5 q\right) |0\rangle, \nonumber\\
+    &= \frac{i}{4} \lim_{p\to 0} \int d^4 x e^{ipx} \delta(x^0) \langle 0 | \left[ J_A^0(x), \left(  - 2i \sum_q m_q \bar q \gamma_5 q\right) \right] |0\rangle, \\
+    &= -\sum_q \langle 0| m_q \bar q q |0 \rangle.
+\end{align}
+Then, we can see that $\chi(0)$ can be written by quark condensate and pseudoscalar susceptibility as
+\cite{Crewther:1977ce, Crewther:1978kq, Veneziano:1980xs}
+\begin{align}
+    4 \chi(0) = -\sum_q \langle 0| m_q \bar q q |0\rangle -i \sum_{q,q'} \lim_{p\to 0} \int d^4 x e^{ipx} \langle 0 | \left( im_q \bar q \gamma^5 q \right)(x) \left( im_{q'} \bar q' \gamma^5 q' \right)(0) |0\rangle. \label{eq:chi by qqbar and pseudoscalar susceptibility}
+\end{align}
+The first term of RHS is ${\cal O}(m_q)$. The second term of RHS is naively ${\cal O}(m_q^2)$, but it can be enhanced by one particle state whose mass is ${\cal O}(\sqrt{m_q})$. In this case, the possible candidate of such a particle is $\pi^0$ meson.
+
+The quark condensate can be evaluated as
+\cite{Gell-Mann:1968hlm,Pagels:1974se,Novikov:1977dq}
+\begin{align}
+    \sum_q \langle 0| m_q \bar q q |0\rangle \simeq -f_\pi^2 m_\pi^2
+\end{align}
+This is so-called Gell-Mann--Oakes--Renner relation.
+For the second term,\footnote{
+    From the definition of $f_\pi$, 
+    \begin{align}
+        \langle 0 | \bar u \gamma^5 \gamma^\mu d | \pi^+\rangle = -\sqrt{2} i f_\pi p^\mu.
+    \end{align}
+    Then, by using the equation of motion, we can obtain
+    \begin{align}
+        \langle 0 | \bar u \gamma^5 d | \pi^+\rangle = \sqrt{2} f_\pi m_\pi^2 / (m_u+m_d).
+    \end{align}
+}
+\begin{align}
+    %\langle 0 | \bar u \gamma^5 u | \pi^0\rangle = - \langle 0 | \bar d \gamma^5 d | \pi^0\rangle = -i \frac{f_\pi m_\pi^2}{m_u+m_d}, \qquad
+    \langle 0 | \bar u \gamma^5 u | \pi^0\rangle = - \langle 0 | \bar d \gamma^5 d | \pi^0\rangle = \frac{f_\pi m_\pi^2}{m_u+m_d}, \qquad
+\end{align}
+Then, we obtain
+\begin{align}
+    %\chi(0) \simeq *** \times \frac{f_\pi^2 m_\pi^2}{m_u+m_d} \times \frac{m_u m_d m_s}{m_u m_d + m_d m_s + m_s m_u}.
+    \chi(0)
+    &\simeq \frac{1}{4} f_\pi^2 m_\pi^2 -\frac{i}{4} \left( \frac{f_\pi m_\pi^2}{m_u+m_d}(m_u-m_d) \right)^2 \frac{i}{-m_\pi^2} \nonumber\\
+    &= f_\pi^2 m_\pi^2 \frac{m_u m_d}{(m_u+m_d)^2}.
+\end{align}
+Naively, the first term and the second term in eq.~\eqref{eq:chi by qqbar and pseudoscalar susceptibility} are ${\cal O}(m_q)$ and ${\cal O}(m_q^2)$, respectively. Thus, the second term can cancel the first term only if one particle state whose mass is ${\cal O}(\sqrt{m_q})$ contributes to the second term.
+Therefore, it is clear that $\chi(0)$ is nonzero if there is no pseudoscalar meson with $m^2 \sim {\cal O}(m_q)$ other than $\pi^0$.
+Also, we can see that $\pi^0$ pole contribution exactly cancels the first term if either $m_u=0$ or $m_d=0$.
+
+
+\subsection{How can we solve the strong CP problem?}
+Eq.~\eqref{eq:VEV GGtilde} implies solutions of the strong CP problem can be classified to the following two categories:
+\begin{itemize}
+    \item $\chi(0) = 0$ (or more precisely $E(\theta)$ is $\theta$-independent) because of BSM particle(s)
+    \item $\chi(0) \neq 0$ but UV physics explains the reason of $\bar\theta \simeq 0$.
+\end{itemize}
+
+
+\subsection{Summary of this section}
+In this section, we formulate the strong CP problem and $U(1)_A$ problem in terms of the topological susceptibility. We have seen that nonzero topological susceptibility is a signature of the strong CP problem, and it is closely connected to the mass of $\eta'$ meson. (for details, see Appendix~\ref{sec:etaprime large N}) 
+This implies that the strong CP problem in the Standard Model is an inevitable consequence of the observed mass spectrum of pseudoscalar mesons, together with the neutron EDM bound.
+Also, this formulation is useful to classify possible BSM solutions for the strong CP problem.
+In the next two sections, we will discuss two well-known solutions to the strong CP problem, i.e., the QCD axion and the Nelson-Barr mechanism.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{QCD axion}\label{sec:qcd axion}
+In this section, we will discuss the QCD axion, which is one of the most beautiful solutions to the strong CP problem. Peccei and Quinn \cite{Peccei:1977hh, Peccei:1977ur} proposed a solution to the strong CP problem by introducing a new global $U(1)$ symmetry, which is called Peccei-Quinn (PQ) symmetry. Then, Weinberg \cite{Weinberg:1977ma} and Wilczek \cite{Wilczek:1977pj} pointed out that this solution predicts the existence of a new light particle, which is called the QCD axion. The QCD axion is a pseudo-Nambu-Goldstone boson associated with the spontaneous breaking of PQ symmetry, and it has a coupling to gluons.
+The following papers are useful to understand this section.
+\begin{itemize}
+\item Kim-Carosi \cite{Kim:2008hd}
+\item Kawasaki-Nakayama \cite{Kawasaki:2013ae}
+\item Hook \cite{Hook:2018dlk}
+\item Caputo-Raffelt \cite{Caputo:2024oqc}
+\end{itemize}
+
+\subsection{Axion EFT}
+Let us consider a scalar field $a$ with the following Lagrangian:
+\begin{align}
+%    {\cal L}_\theta &= \frac{\bar\theta g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}, \\
+    {\cal L}_a &= \frac{1}{2} (\partial_\mu a)(\partial^\mu a) + \frac{a}{f_a} \frac{g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}. \label{eq:axion EFT}
+\end{align}
+We define the shift symmetry of $a$ as
+\begin{align}
+    a \to a + \delta,
+\end{align}
+where $\delta$ is a constant.
+The kinetic term is invariant under this shift symmetry. The coupling between $a$ and gluons is not invariant, but it is invariant up to a total derivative term.
+Thus, under this shift symmetry, the Lagrangian is invariant at the classical level. However, it is not invariant at the quantum level. At the quantum level, the theory is invariant under the finite shift of $a$ as $a \to a + 2\pi f_a$.
+
+The axion Lagrangian with the $\theta$ term is given by
+\begin{align}
+    {\cal L} &= \frac{1}{2} (\partial_\mu a)(\partial^\mu a) + \left( \bar\theta + \frac{a}{f_a} \right) \frac{g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}. \label{eq:axion EFT with theta}
+\end{align}
+After integrating out the quark and gluon field in the path integral, we obtain the following effective Lagrangian:
+\begin{align}
+    {\cal L} = \frac{1}{2} (\partial_\mu a)(\partial^\mu a) - V\left(\bar\theta + \frac{a}{f_a}\right).
+\end{align}
+
+\subsubsection{Vafa-Witten theorem}
+Let us write the potential $V(\theta)$ by using the Euclidean path integral as
+\begin{align}
+    V(\theta) = -\frac{1}{V_4} \log \int {\cal D}A_\mu {\cal D}q {\cal D}\bar q \exp\left( -\int d^4 x ({\cal L}_{\rm QCD} + \frac{i \theta g_s^2}{32\pi^2} G_{ij}^a \tilde G_{ij}^a) \right),
+\end{align}
+where $V_4$ is the four-dimensional volume. Note that $i$ and $j$ run over $1,2,3,4$ in Euclidean space.
+Integrating out the quark field, we obtain
+\begin{align}
+    V(\theta) = -\frac{1}{V_4}\log \int {\cal D}A_\mu \det(\slashed{D} + M) \exp\left( -\int d^4 x \frac{1}{4} G_{ij}^a G_{ij}^a \right) \times \exp\left( -\int d^4 x  \frac{i \theta g_s^2}{32\pi^2} G_{ij}^a \tilde G_{ij}^a \right).
+\end{align}
+In vector-like gauge theory such as QCD, the fermion determinant $\det(\slashed{D} + M)$ is positive definite for positive real quark masses \cite{Vafa:1983tf}. Thus, the $\theta$-independent part of integrand is positive definite. Thus, we conclude that
+\begin{align}
+    V(\theta) \geq V(0).
+\end{align}
+This is the Vafa-Witten theorem \cite{Vafa:1984xg}.
+At the potential minimum of $V$, we obtain
+\begin{align}
+    \bar\theta + \frac{\langle a \rangle}{f_a} = 0.
+\end{align}
+Thus, the strong CP problem is dynamically solved by the axion field $a$!\footnote{
+CKM phase can induce a non-zero neutron EDM but this is of the order of $10^{-31}-10^{-33}~e~{\rm cm}$ \cite{Georgi:1986kr}.}
+The mass of the axion is evaluated as
+\begin{align}
+    m_a^2 = \frac{1}{f_a^2} \frac{\partial^2 V}{\partial \theta^2}\biggr|_{\theta=0}
+\end{align}
+Since $\partial^2 V/\partial \theta^2|_{\theta=0}$ is nothing but the topological susceptibility $\chi$ of QCD, we obtain
+\begin{align}
+    m_a^2 = \frac{\chi_{\rm QCD}}{f_a^2}, \label{eq:axion mass 1}
+\end{align}
+where
+\begin{align}
+    \chi_{\rm QCD} = f_\pi^2 m_\pi^2 \frac{m_u m_d}{(m_u + m_d)^2}.
+\end{align}
+
+\subsubsection{Axion in the chiral Lagrangian}
+To discuss physics of the axion whose Lagrangian is given in eq.~\eqref{eq:axion EFT with theta}, we can implement the axion field $a$ in the chiral Lagrangian given in eq.~\eqref{eq:chpt nonzero theta}, which can be obtained by replacing $\bar\theta \to \bar\theta + a/f_a$.
+Actually, we can absorb $\bar\theta$ into the definition of $a$. Then, we can simply replace $\bar\theta \to a/f_a$ to obtain the axion potential.
+
+Here, we consider the two-flavor case for simplicity. Then, we can take the following quark mass matrix,
+\begin{align}
+    M &= {\rm diag}(m_u \exp\left( \frac{i m_* a}{m_u f_a}\right), m_d \exp\left( \frac{i m_* a}{m_d f_a}\right)),
+\end{align}
+where $m_* = (1/m_u + 1/m_d)^{-1}$.
+By focusing on the neutral pion $\pi^0$, we can take the following form of $\Sigma$:
+\begin{align}
+    \Sigma &= {\rm diag}(\exp\left(\frac{i\pi^0}{f_\pi}\right), \exp\left(-\frac{i\pi^0}{f_\pi}\right)).
+\end{align}
+Then, the potential of $\pi^0$ and $a$ is given by
+\begin{align}
+    V
+    &= -\frac{1}{2} f_\pi^2 B_0 {\rm tr}[M \Sigma + M^\dagger \Sigma^\dagger] \nonumber\\
+    &= -f_\pi^2 B_0 \left( m_u \cos\left(\frac{m_* a}{m_u f_a} + \frac{\pi^0}{f_\pi}\right) + m_d \cos\left(\frac{m_* a}{m_d f_a} - \frac{\pi^0}{f_\pi}\right) \right) \nonumber\\
+    &= -f_\pi^2 B_0 (m_u + m_d) + \frac{1}{2} f_\pi^2 B_0 \left( \frac{1}{m_u} + \frac{1}{m_d} \right) m_*^2 \frac{a^2}{f_a^2} + \frac{1}{2} (m_u + m_d) B_0  (\pi^0)^2 + \cdots \nonumber\\
+    &= -f_\pi^2 B_0 (m_u + m_d) + \frac{1}{2} f_\pi^2 B_0 m_* \frac{a^2}{f_a^2} + \frac{1}{2} (m_u + m_d) B_0  (\pi^0)^2 + \cdots.
+\end{align}
+This reproduces the relation $m_\pi^2 = B_0 (m_u + m_d)$ again. In addition, we can also obtain the mass of axion as
+\begin{align}
+    m_a^2 = \frac{\partial^2 V}{\partial a^2}\biggr|_{a=0} = \frac{f_\pi^2 B_0 m_*}{f_a^2} = \frac{f_\pi^2 m_\pi^2}{f_a^2} \frac{m_u m_d}{(m_u + m_d)^2}. \label{eq:axion mass 2}
+\end{align}
+We can easily see that this is consistent with eq.~\eqref{eq:axion mass 1}. By using $m_u = 2.16~{\rm MeV}$ and $m_d = 4.70~{\rm MeV}$ \cite{ParticleDataGroup:2024cfk}, we can evaluate the axion mass as
+\begin{align}
+    m_a \simeq 5.8~{\rm \mu eV} \times \left( \frac{10^{12}~{\rm GeV}}{f_a} \right).
+\end{align}
+
+\subsection{UV completion of QCD axion}
+The QCD axion has shift symmetry. Then, interpreting the QCD axion as a NG boson from the spontaneous breaking of a global $U(1)$ symmetry is a natural idea.
+This symmetry is called Peccei-Quinn (PQ) symmetry. To obtain the coupling between the axion and gluons, this symmetry should be anomalous under $SU(3)_C$ gauge symmetry. Thus, we need to assign PQ charge to colored particles in a chiral way. There are two possible simple options:
+\begin{itemize}
+    \item The SM quarks do not have PQ charge: KSVZ axion model
+    \item The SM quarks have PQ charge: PQWW, DFSZ axion model
+\end{itemize}
+
+
+\subsubsection{KSVZ model}
+\begin{table}[h]
+\centering
+\begin{tabular}{c|cc}
+& $SU(3)_C$ & $U(1)_{\rm PQ}$ \\\hline
+$Q_L$ & $3$ & $0$ \\
+$Q_R$ & $3$ & $1$ \\
+$\Phi$ & $1$ & $1$
+\end{tabular}
+\caption{Matter content of KSVZ model.}\label{tab:KSVZ}
+\end{table}
+%
+One of the simplest UV completions of QCD axion is proposed by Kim \cite{Kim:1979if} and Shifman, Vainshtein, and Zakharov \cite{Shifman:1979if}. This model is called the KSVZ axion model.
+Let us introduce a new complex scalar field $\Phi$ and a vector-like quark $Q_{L,R}$, which are charged under $U(1)_{\rm PQ}$ symmetry. The matter content of KSVZ model is shown in table \ref{tab:KSVZ}. The Lagrangian of KSVZ model is given by
+\begin{align}
+    {\cal L} = -\lambda \left( |\Phi|^2 - \frac{v_\Phi^2}{2} \right)^2 - \left( y \Phi \bar Q_R Q_L + {\rm h.c.} \right).
+\end{align}
+At the vacuum, $\Phi$ obtains a VEV as $\langle \Phi \rangle = v_\Phi/\sqrt{2}$. Then, the PQ symmetry is spontaneously broken, and the axion is identified as the phase of $\Phi$:
+\begin{align}
+    \Phi = \frac{v_\Phi}{\sqrt{2}} e^{i a/v_\Phi}.
+\end{align}
+
+To eliminate the axion field dependence in the mass term of fermion $Q$, we can perform the following chiral rotation of $Q_R$:
+\begin{align}
+    Q_L(x) \to Q_L(x), \qquad
+    Q_R(x) \to \exp\left( \frac{ia(x)}{v_\Phi} \right) Q_R(x).
+\end{align}
+Then, we obtain the following Lagrangian for $a$ and $Q$:
+\begin{align}
+    {\cal L} = \frac{1}{2} (\partial_\mu a)(\partial^\mu a) + \frac{a}{v_\Phi} \frac{g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu} - \frac{1}{v_\Phi} (\partial_\mu a) \bar Q \gamma^\mu P_R Q - \frac{y v_\Phi}{\sqrt{2}} \bar Q Q. \label{eq:KSVZ axion Lagrangian}
+\end{align}
+By integrating out the heavy fermion $Q$, we can drop the third term and the last term. Then, we obtain the effective Lagrangian of the axion as given in eq.~\eqref{eq:axion EFT}.
+Comparing eq.~\eqref{eq:KSVZ axion Lagrangian} with eq.~\eqref{eq:axion EFT}, we can identify the axion decay constant $f_a$ as
+\begin{align}
+    f_a = v_\Phi.
+\end{align}
+
+
+\subsubsection{PQWW, DFSZ model}
+\begin{table}[h]
+\centering
+\begin{tabular}{c|cc}
+& $SU(3)_C$ & $U(1)_{\rm PQ}$ \\\hline
+$q_L$ & $3$ & $0$ \\
+$u_R$ & $3$ & $1$ \\
+$d_R$ & $3$ & $0$ \\
+$\ell_L$ & $1$ & $0$ \\
+$e_R$ & $1$ & $0$ \\
+$H_1$ & $1$ & $0$ \\
+$H_2$ & $1$ & $1$
+\end{tabular}
+\qquad\qquad
+\begin{tabular}{c|cc}
+& $SU(3)_C$ & $U(1)_{\rm PQ}$ \\\hline
+$q_L$ & $3$ & $0$ \\
+$u_R$ & $3$ & $1$ \\
+$d_R$ & $3$ & $0$ \\
+$\ell_L$ & $1$ & $0$ \\
+$e_R$ & $1$ & $-1$ \\
+$H_1$ & $1$ & $0$ \\
+$H_2$ & $1$ & $1$
+\end{tabular}
+\caption{Matter content of PQWW-I model (left) and PQWW-II model (right).}\label{tab:PQWW}
+\end{table}
+%
+Let us assume the SM quarks have PQ charges. Then, the Higgs field also has nonzero PQ charge. The minimal Higgs sector with PQ symmetry is two Higgs doublet model. This axion model is called PQWW model \cite{Weinberg:1977ma,Wilczek:1977pj}.
+The Higgs potential and Yukawa interaction of PQWW model are given by
+\begin{align}
+    V
+    =& m_{11}^2 |H_1|^2 + m_{22}^2 |H_2|^2
+    + \frac{\lambda_1}{2} |H_1|^4 + \frac{\lambda_2}{2}  |H_2|^4 + \lambda_3 |H_1|^2 |H_2|^2 + \lambda_4 |H_1^\dagger H_2|^2.
+\end{align}
+The quark Yukawa interaction is given by
+\begin{align}
+    %{\cal L} = -y_u \tilde H_2 \bar q_L u_R - y_d H_1 \bar q_L d_R + {\rm h.c.}
+    {\cal L}_{\rm yuk} &= -y_{u,ij} \bar u_{R,i} \tilde H^\dagger_2 q_{L,j}  - y_{d,ij} \bar d_{R,i} H^\dagger_1 q_{L,j} + {\rm h.c.}.
+\end{align}
+For the lepton Yukawa interaction, there are two choices:
+\begin{align}
+    %{\cal L} &= - y_e H_{1} \bar \ell_L e_R + {\rm h.c.}, \\
+    %{\cal L} &= - y_e H_{2} \bar \ell_L e_R + {\rm h.c.}
+    {\cal L}_{\rm (I)} &= - y_{e,ij} \bar e_{R,i} H^\dagger_1 \ell_{L,j} + {\rm h.c.}, \\
+    {\cal L}_{\rm (II)} &= - y_{e,ij} \bar e_{R,i} H^\dagger_2 \ell_{L,j} + {\rm h.c.}
+\end{align}
+Here we call the first choice as PQWW-I and the second choice as PQWW-II. See also table \ref{tab:PQWW}.
+
+Let us decompose $H_1$ and $H_2$ as
+\begin{align}
+    H_1 = \frac{1}{\sqrt{2}} \mqty(0 \\ v_1 ) e^{i a_1/v_1}, \qquad
+    H_2 = \frac{1}{\sqrt{2}} \mqty(0 \\ v_2 ) e^{i a_2/v_2}.   
+\end{align}
+$v_1 = v \cos\beta$ and $v_2 = v \sin\beta$ with $v=246~{\rm GeV}$.
+\begin{align}
+    {\cal L} =& \frac{1}{2} (\partial_\mu a_1 - \frac{1}{2} g_Z Z_\mu v_1)^2 + \frac{1}{2} (\partial_\mu a_2 - \frac{1}{2} g_Z Z_\mu v_2)^2 \nonumber\\
+    =& \frac{1}{2} ( \frac{1}{2}g_Z v Z_\mu - \cos\beta\partial_\mu a_1 - \sin\beta\partial_\mu a_2)^2 + \frac{1}{2} (\partial_\mu a_1)^2 + \frac{1}{2} (\partial_\mu a_2)^2 - \frac{1}{2} (\cos\beta\partial_\mu a_1 + \sin\beta\partial_\mu a_2)^2 \nonumber\\
+    =& \frac{1}{2} ( \frac{1}{2} g_Z v Z_\mu - \cos\beta\partial_\mu a_1 - \sin\beta\partial_\mu a_2)^2 +  \frac{1}{2}( \partial_\mu(a_1 \sin\beta - a_2 \cos\beta ))^2,
+\end{align}
+where $g_Z \equiv \sqrt{g'^2 + g^2}$, $\tan\theta_W = g'/g$, and $Z_\mu \equiv \cos\theta_W W_\mu^3 - \sin\theta_W B_\mu$.
+Then, we define $a_H$ and $G$ as
+\begin{align}
+    a_H = -a_1 \sin\beta + a_2 \cos\beta, \qquad
+    G = a_1 \cos\beta + a_2 \sin\beta.
+\end{align}
+$G$ is eaten as a longitudinal mode of $Z$ boson, and $a_H$ is identified as the axion.
+\begin{align}
+    a_1 = -a_H \sin\beta + G \cos\beta, \qquad
+    a_2 = a_H \cos\beta + G \sin\beta.
+\end{align}
+$H_1$ and $H_2$ can be rewritten as
+\begin{align}
+    H_1 = \frac{1}{\sqrt{2}} \mqty(0 \\ v_1 ) \exp\left( i \frac{-a_H \tan\beta}{v} + \frac{iG}{v} \right), \qquad
+    H_2 = \frac{1}{\sqrt{2}} \mqty(0 \\ v_2 ) \exp\left( i \frac{a_H \cot\beta}{v} + \frac{iG}{v} \right).   
+\end{align}
+Let us absorb $a_H$ by the following chiral rotation of quark fields:
+\begin{align}
+    u_R \to \exp\left( i \frac{a_H \cot\beta}{v} \right) u_R, \qquad
+    d_R \to \exp\left( i \frac{a_H \tan\beta}{v} \right) d_R.
+\end{align}
+Then, we obtain the following Lagrangian for $a_H$:
+\begin{align}
+    {\cal L} = \frac{3a_H}{f_v} \frac{g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu} - \frac{\cos^2\beta}{f_v} (\partial_\mu a_H)\bar u \gamma^\mu P_R u - \frac{\sin^2\beta}{f_v} (\partial_\mu a_H)\bar d \gamma^\mu P_R d.
+\end{align}
+where $f_v$ is given by
+\begin{align}
+    f_v = v \sin\beta \cos\beta.
+\end{align}
+However, PQWW axion model is already excluded because of too low $f_v \sim {\cal O}(100)~{\rm GeV}$ \cite{Kim:1986ax, Cheng:1987gp}.
+
+% \begin{table}[h]
+% \centering
+% \begin{tabular}{c|cc}
+% & $SU(3)_C$ & $U(1)_{\rm PQ}$ \\\hline
+% $q_L$ & $3$ & $0$ \\
+% $u_R$ & $3$ & $1$ \\
+% $d_R$ & $3$ & $0$ \\
+% $H_1$ & $1$ & $0$ \\
+% $H_2$ & $1$ & $1$ \\
+% $S$ & $1$ & $-1$
+% \end{tabular}
+% \qquad\qquad
+% \begin{tabular}{c|cc}
+% & $SU(3)_C$ & $U(1)_{\rm PQ}$ \\\hline
+% $q_L$ & $3$ & $0$ \\
+% $u_R$ & $3$ & $2$ \\
+% $d_R$ & $3$ & $0$ \\
+% $H_1$ & $1$ & $0$ \\
+% $H_2$ & $1$ & $2$ \\
+% $S$ & $1$ & $-1$
+% \end{tabular}
+% \caption{Matter content of DFSZ model.}\label{tab:DFSZ}
+% \end{table}
+\begin{table}[h]
+\centering
+\begin{tabular}{c|cc}
+& $SU(3)_C$ & $U(1)_{\rm PQ}$ \\\hline
+$q_L$ & $3$ & $0$ \\
+$u_R$ & $3$ & $2$ \\
+$d_R$ & $3$ & $0$ \\
+$\ell_L$ & $1$ & $0$ \\
+$e_R$ & $1$ & $0$ \\
+$H_1$ & $1$ & $0$ \\
+$H_2$ & $1$ & $2$ \\
+$S$ & $1$ & $-1$
+\end{tabular}
+\qquad\qquad
+\begin{tabular}{c|cc}
+& $SU(3)_C$ & $U(1)_{\rm PQ}$ \\\hline
+$q_L$ & $3$ & $0$ \\
+$u_R$ & $3$ & $2$ \\
+$d_R$ & $3$ & $0$ \\
+$\ell_L$ & $1$ & $0$ \\
+$e_R$ & $1$ & $-2$ \\
+$H_1$ & $1$ & $0$ \\
+$H_2$ & $1$ & $2$ \\
+$S$ & $1$ & $-1$
+\end{tabular}
+\caption{Matter content of DFSZ-I model (left) and DFSZ-II model (right).}\label{tab:DFSZ}
+\end{table}
+DFSZ model \cite{Zhitnitsky:1980tq, Dine:1981rt} is a minimal extension of PQWW model, in which we introduce a complex scalar field $S$ with PQ charge. We can write the following renormalizable scalar potential of DFSZ model:\footnote{
+Note that we could also use the following potential term instead of eq.~\eqref{eq:dfsz potential}:
+\begin{align}
+    V_S &= \lambda_S \left( |S|^2 - \frac{v_S^2}{2} \right)^2 + \kappa (S H_1^\dagger H_2 + {\rm h.c.}).
+\end{align}
+In this case, the PQ charge assignment becomes different from the one in table \ref{tab:DFSZ}, and we obtain $N_{\rm DW} = 3$.}
+\begin{align}
+%    V_S^{(1)} &= \lambda_S \left( |S|^2 - \frac{v_S^2}{2} \right)^2 + \kappa (S H_1^\dagger H_2 + {\rm h.c.}), \label{eq:dfsz potential 1}\\
+%    V_S^{(2)} &= \lambda_S \left( |S|^2 - \frac{v_S^2}{2} \right)^2 + \lambda_{SH} (S^2 H_1^\dagger H_2 + {\rm h.c.}).\label{eq:dfsz potential 2}
+    V_S &= \lambda_S \left( |S|^2 - \frac{v_S^2}{2} \right)^2 + \lambda_{SH} (S^2 H_1^\dagger H_2 + {\rm h.c.}).\label{eq:dfsz potential}
+\end{align}
+Let us write $S$ as
+\begin{align}
+    S = \frac{v_S}{\sqrt{2}} e^{i a_s/v_S}.
+\end{align}
+Then, the potential terms in eq.~\eqref{eq:dfsz potential} can be rewritten as
+\begin{align}
+%    \kappa (S H_1^\dagger H_2 + {\rm h.c.}) &\to \frac{\kappa v_S v^2}{\sqrt 2} \sin \beta \cos\beta \cos\left( \frac{a_s}{v_S} - \frac{a_H}{v} \right), \\
+    \lambda_{SH} (S^2 H_1^\dagger H_2 + {\rm h.c.}) &\to \lambda_{SH} \frac{v_S^2 v^2}{2} \sin\beta\cos\beta \cos\left( 2\frac{a_s}{v_S} + \frac{a_H}{f_v} \right),
+\end{align}
+respectively. This term gives mass to $A$, which is a linear combination of $a_s$ and $a_H$. The massless mode $a$, orthogonal to the massive mode, is identified as
+%\begin{align}
+%    a \simeq a_s + \frac{f_v}{v_S} a_H, 
+%\end{align}
+%for the first case, and 
+\begin{align}
+    a \simeq -a_s + \frac{2f_v}{v_S} a_H.
+\end{align}
+%for the second case.
+Inversely, we obtain
+%for the first case,
+%\begin{align}
+%    a_s \simeq a - \frac{f_v}{v_S} A, \qquad a_H \simeq -A + a \frac{f_v}{v_S},
+%\end{align}
+%and, for the second case,
+\begin{align}
+    a_s \simeq -a + \frac{2f_v}{v_S} A, \qquad
+    a_H \simeq A + a \frac{2f_v}{v_S}.
+\end{align}
+
+Similar to the PQWW model, the Yukawa interaction of quarks obtains the axion dependence and this can be eliminated by the following chiral rotation of quark fields:
+% \begin{align}
+%     u_R \to \exp\left( i \frac{a \cos^2\beta}{v_S} \right) u_R, \qquad
+%     d_R \to \exp\left( i \frac{a \sin^2\beta}{v_S} \right) d_R,
+% \end{align}
+% and for the second case:
+\begin{align}
+    u_R \to \exp\left( i \frac{2a \cos^2\beta}{v_S} \right) u_R, \qquad
+    d_R \to \exp\left( i \frac{2a \sin^2\beta}{v_S} \right) d_R.
+\end{align}
+Finally, we obtain the following Lagrangian for the axion:
+% \begin{align}
+%     {\cal L} = \frac{3a}{v_S} \frac{g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu} + \frac{\cos^2\beta}{v_S} (\partial_\mu a)\bar u \gamma^\mu P_R u + \frac{\sin^2\beta}{v_S} (\partial_\mu a)\bar d \gamma^\mu P_R d.
+% \end{align}
+% and for the second case:
+\begin{align}
+    {\cal L} = \frac{6a}{v_S} \frac{g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu} - \frac{2\cos^2\beta}{v_S} (\partial_\mu a)\bar u \gamma^\mu P_R u - \frac{2\sin^2\beta}{v_S} (\partial_\mu a)\bar d \gamma^\mu P_R d.
+\end{align}
+By comparing this with eq.~\eqref{eq:axion EFT}, we can identify the axion decay constant $f_a$ as
+%\begin{align}
+%    f_a = \frac{v_S}{3}.
+%\end{align}
+%and for the second case as
+\begin{align}
+    f_a = \frac{v_S}{6}.
+\end{align}
+
+
+\subsection{Domain wall number}
+So far we have seen several explicit models of QCD axion. In low energy effective description, the axion has a coupling to gluons as
+\begin{align}
+    {\cal L} = \frac{a}{f_a} \frac{g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu}.
+\end{align}
+The Vafa-Witten theorem tells us that the potential minimum is at $a = 0$. However, the periodicity of $\bar\theta$ tells us that $a = 2\pi n f_a$ ($n \in \mathbb{Z}$) are also potential minima. Does it mean the axion potential has multiple minima? The answer depends on the model.
+
+In the KSVZ axion model, the axion is identified as the phase of $\Phi$:
+\begin{align}
+    \Phi = \frac{f_a}{\sqrt{2}} e^{i a/f_a}.
+\end{align}
+Thus, the periodicity of $a$ is given by
+\begin{align}
+    a \sim a + 2\pi f_a.
+\end{align}
+This means $a = 0$ and $a = 2\pi f_a$ are the same point in the field space. Thus, there is only one potential minimum.
+
+% In the DFSZ axion model type-I, the axion is identified as the phase of $S$:
+% \begin{align}
+%     S = \frac{3f_a}{\sqrt{2}} e^{i a/3f_a},
+% \end{align}
+% Thus, the periodicity of $a$ is given by
+% \begin{align}
+%     a \sim a + 6\pi f_a,
+% \end{align}
+% and there exists three degenerate potential minima:
+% \begin{align}
+%     a = 0, ~2\pi f_a, ~4\pi f_a.
+% \end{align}
+
+In the DFSZ axion model, the axion is identified as the phase of $S$:
+\begin{align}
+    S = \frac{6f_a}{\sqrt{2}} e^{i a/6f_a},
+\end{align}
+Thus, the periodicity of $a$ is given by
+\begin{align}
+    a \sim a + 12\pi f_a.
+\end{align}
+and there exists six degenerate potential minima:
+\begin{align}
+    a = 0, ~2\pi f_a, ~4\pi f_a, ~6\pi f_a, ~8\pi f_a, ~10\pi f_a.
+\end{align}
+
+The number of physical global minima of the axion potential is called domain wall number $N_{\rm DW}$, i.e., 
+\begin{align}
+    N_{\rm DW} |_{\rm KSVZ} = 1, \qquad
+    N_{\rm DW} |_{\rm DFSZ} = 6.
+\end{align}
+Note that $U(1)_{\rm PQ}$ is explicitly broken by QCD interaction, but $Z_{N_{\rm DW}}$ subgroup of $U(1)_{\rm PQ}$ is unbroken because of the degeneracy of the potential minima. Thus, DFSZ has $Z_6$ symmetry. However, both of them are spontaneously broken by the VEV of $S$.
+
+Suppose that the PQ symmetry is not broken at the end of inflation, i.e., $\langle \Phi \rangle = 0$ in KSVZ or $\langle S \rangle = 0$ in DFSZ.
+First, the PQ symmetry is spontaneously broken at the PQ phase transition. Then, the axion obtains a VEV. This phase transition should be before QCD phase transition. Then, the QCD nonperturbative effect is negligible and the axion potential is flat. Thus, we can understand there is no explicit breaking of $U(1)_{\rm PQ}$, but it is spontaneously broken. From this symmetry breaking, we can expect the formation of cosmic strings.
+After the QCD phase transition, the axion obtains a potential and $U(1)_{\rm PQ}$ is explicitly broken to $Z_{N_{\rm DW}}$. Then, $N_{\rm DW}$ degenerate vacua appear. Thus, we have domain wall if $N_{\rm DW} > 1$. $N_{\rm DW}$ is attached to the cosmic string. Such a string-domain wall network could overclose the universe.
+
+\subsection{Generic axion EFT}
+The EFT given in eq.~\eqref{eq:axion EFT} is a minimal setup of the axion to solve the strong CP problem. However, as we have seen so far, in general, the axion can couple to other SM particles; quarks, leptons, and electroweak gauge bosons. Here we discuss a generic axion EFT below the electroweak scale. The generic axion EFT is given by
+\begin{align}
+    {\cal L} = \frac{1}{2} (\partial_\mu a)(\partial^\mu a) + \frac{a}{f_a} \frac{g_s^2}{32\pi^2} G_{\mu\nu}^a \tilde G^{a\mu\nu} + \frac{E}{2N} \frac{a}{f_a} \frac{e^2}{16\pi^2} F_{\mu\nu} \tilde F^{\mu\nu} - \frac{1}{f_a} (\partial_\mu a) j_{\rm PQ}^\mu,
+\end{align}
+where $F_{\mu\nu}$ is the field strength of the photon and $j_{\rm PQ}$ is the PQ current of SM fermions.
+The anomaly coefficients $N$ and $E$ are given by
+\begin{align}
+    %N = \sum_f Q_{\rm PQ}^f C(r), \qquad
+    %E = \sum_f Q_{\rm PQ}^f (Q_{\rm em}^f)^2 d(r), \label{eq:anomaly coefficients}
+    N = \sum_f (Q_{\rm PQ}^{f_R} - Q_{\rm PQ}^{f_L}) C(r), \qquad
+    E = \sum_f (Q_{\rm PQ}^{f_R} - Q_{\rm PQ}^{f_L}) (Q_{\rm em}^f)^2 d(r), \label{eq:anomaly coefficients}
+\end{align}
+$C(r)$ is the Dynkin index of the representation $r$ defined by
+\begin{align}
+    {\rm tr}[T_r^a T_r^b] = C(r) \delta^{ab}.
+\end{align}
+For example, $C({\rm fund}) = 1/2$ and $C({\rm adj}) = N$ for $SU(N)$ gauge group. $d(r)$ is the dimension of the representation $r$. $Q_{\rm em}^f$ and $Q_{\rm PQ}^{f_{L,R}}$ are the electric and PQ charges of fermion $f$, respectively. The sum is taken over all fermions in the theory.
+%Note that summation over $f$ in eq.~\eqref{eq:anomaly coefficients} should be understood as summing over all Weyl fermion.
+With the normalization in which the coefficient of \(aG\tilde G\) is \(1/f_a\), the corresponding fermion current $j_{\rm PQ}^\mu$ is
+\begin{align}
+%    j_{\rm PQ}^\mu = \frac{1}{2N} \sum_f Q_{\rm PQ}^f \bar f \sigma^\mu f,
+    j_{\rm PQ}^\mu = \frac{1}{2N} \sum_f \bar f \gamma^\mu ( Q_{\rm PQ}^{f_L} P_L + Q_{\rm PQ}^{f_R} P_R )f.
+\end{align}
+%where $f$ is a Weyl fermion.
+
+For the minimal KSVZ axion model, $E/N = 0$ and $j_{\rm PQ}^\mu = 0$. For the DFSZ-I axion model,
+The factors in the following expressions are the chiral PQ charge, the group-theory factor, and the multiplicities:
+\begin{align}
+    N
+    &=
+    \underbrace{2}_{Q_{\rm PQ}}
+    \times \underbrace{\frac12}_{C({\bf 3})}
+    \times \underbrace{3}_{N_{\rm gen}}
+    =3,
+    \\
+    E
+    &=
+    \underbrace{2}_{Q_{\rm PQ}}
+    \times \underbrace{\left(\frac23\right)^2}_{Q_{\rm em}^2}
+    \times \underbrace{3}_{N_c}
+    \times \underbrace{3}_{N_{\rm gen}}
+    =8,
+\end{align}
+therefore
+\begin{align}
+    \frac{E}{N} = \frac{8}{3}.
+\end{align}
+%\begin{align}
+%    \frac{E}{N} = \frac{2|_{\rm PQ} \times (2/3)^2 \times 3|_{d(f)} \times 3|_{\rm flavor}}{2|_{\rm PQ} \times 1/2|_{C(f)} \times 3|_{\rm flavor}} = \frac{8}{3}.
+%\end{align}
+The PQ current is given by
+\begin{align}
+    j_{\rm PQ}^\mu = \frac{1}{3} \cos^2\beta \bar u \gamma^\mu P_R u + \frac{1}{3}  \sin^2\beta \bar d \gamma^\mu P_R d + \frac{1}{3}  \sin^2\beta \bar e \gamma^\mu P_R e.
+\end{align}
+Note that this PQ charge is different from the original PQ charge assignment because the axion $a$ is chosen to be orthogonal to the longitudinal mode of $Z$ boson. This PQ charge should be understood as $Q_{\rm PQ} - 4\sin^2\beta (Y-B/2+L/2)$.
+For the DFSZ-II axion model,
+\begin{align}
+    N
+    &=
+    \underbrace{2}_{Q_{\rm PQ}}
+    \times \underbrace{\frac12}_{C({\bf 3})}
+    \times \underbrace{3}_{N_{\rm gen}}
+    =3,
+    \\
+    E
+    &=
+    \left[ \underbrace{2}_{Q_{\rm PQ}}
+    \times \underbrace{\left(\frac23\right)^2}_{Q_{\rm em}^2}
+    \times \underbrace{3}_{N_c}
+    + \underbrace{(-2)}_{Q_{\rm PQ}}
+    \times \underbrace{\left(-1\right)^2}_{Q_{\rm em}^2} \right]
+    \times \underbrace{3}_{N_{\rm gen}}
+    =2,
+\end{align}
+therefore,
+\begin{align}
+    \frac{E}{N} = \frac{2}{3}.
+\end{align}
+% \begin{align}
+%     \frac{E}{N} = \frac{2|_{\rm PQ} \times (2/3)^2 \times 3|_{d(f)} \times 3_{\rm flavor} + (-2)|_{\rm PQ} \times (-1)^2 \times 3_{\rm flavor}}{2|_{\rm PQ} \times 1/2|_{C(f)} \times 3|_{\rm flavor}} = \frac{2}{3}.
+% \end{align}
+The PQ current is given by
+\begin{align}
+    j_{\rm PQ}^\mu = \frac{1}{3} \cos^2\beta \bar u \gamma^\mu P_R u + \frac{1}{3} \sin^2\beta \bar d \gamma^\mu P_R d - \frac{1}{3} \cos^2\beta \bar e \gamma^\mu P_R e.
+\end{align}
+Again, this PQ charge is different from the original PQ charge assignment because the axion $a$ is chosen to be orthogonal to the longitudinal mode of $Z$ boson. This PQ charge should be understood as $Q_{\rm PQ} - 4\sin^2\beta (Y-B/2+L/2)$.
+
+After integrating out mesons, the axion-photon coupling is given by
+\begin{align}
+    {\cal L} = \frac{1}{4} g_{a\gamma\gamma} a F_{\mu\nu} \tilde F^{\mu\nu},
+\end{align}
+where $g_{a\gamma\gamma}$ is given by
+\begin{align}
+    g_{a\gamma\gamma} = \frac{\alpha_{\rm em}}{2\pi f_a} \left( \frac{E}{N} - \Delta \right),
+\end{align}
+where $\Delta$ is $(2/3)(4m_d + m_u)/(m_d + m_u) \simeq 2.04$ at the LO chiral perturbation theory, and $1.92$ at NLO chiral perturbation theory \cite{GrillidiCortona:2015jxo}.
+
+\subsection{Where is the axion? --- How large is $f_a$?}
+Here we briefly summarize the phenomenology of QCD axion and the constraints on $f_a$.
+
+\subsubsection{Lower bound on $f_a$}
+The axion decay constant $f_a$ should be sufficiently large, as $f_a \gtrsim 10^8\text{--}10^9~{\rm GeV}$. Here we briefly look at several constraints on $f_a$.
+Here we are sloppy about the model dependence of the axion couplings to SM particles. 
+Each bound on \(f_a\) should be understood up to model-dependent factors of order unity.
+
+\begin{description}
+    \item[$K^+ \to \pi^+ a$]~\\
+One of the most important laboratory constraints on the axion comes from the rare kaon decay, in particular, $K^+ \to \pi^+ a$.
+The rare kaon decay is searched by NA62 \cite{NA62:2025upx} as ${\rm Br}(K^+ \to \pi^+ X) < 3 \times 10^{-11}$ (90\% C.L.) for $m_X \simeq 0$ and $\tau = +\infty$. This constraint can be translated into the lower bound on $f_a$ as $f_a \gtrsim 1~{\rm TeV}$. (See, e.g., ref.~\cite{Fukuda:2015ana}.)
+    \item[Stellar cooling]~\\
+Axions can be produced in stellar interiors and escape from the star, providing an additional cooling channel. 
+For example, the helium-burning lifetime of horizontal-branch stars constrains the axion-photon coupling as $g_{a\gamma\gamma} \lesssim 0.65 \times 10^{-10}~{\rm GeV}^{-1}$ (95\% C.L.) \cite{Caputo:2024oqc}. This bound can be translated into $f_a \gtrsim 3.4 \times 10^7~{\rm GeV}$ for the minimal KSVZ axion \cite{Caputo:2024oqc}.
+    \item[SN1987A]~\\ 
+Axion emission provides an additional cooling channel for supernovae and can shorten the duration of the neutrino burst. The measurement of neutrino signals from SN1987A constrains $f_a \gtrsim 4 \times 10^8~{\rm GeV}$ for the minimal KSVZ axion \cite{Caputo:2024oqc}. For more details on the discussion of supernovae (including theoretical uncertainties), see \S 8 of ref.~\cite{Caputo:2024oqc}.
+\end{description}
+
+
+\subsubsection{Axion dark matter: misalignment mechanism}
+$f_a \sim 10^{12}~{\rm GeV}$ is interesting since the observed dark matter abundance can be explained by a simple scenario of the axion dark matter. 
+%See ref.~\cite{Kawasaki:2013ae} for a review of axion cosmology.
+
+The equation of motion of the axion in the FRW universe is given by
+\begin{align}
+    \ddot a + 3 H \dot a + V'(a) \simeq 0.
+\end{align}
+The second term in the LHS is the Hubble friction term. Then, the axion starts to roll when
+\begin{align}
+    3H(T_{\rm osc}) \simeq m_a(T_{\rm osc}),
+\end{align}
+where $m_a(T) = \sqrt{\partial^2 V_T/\partial a^2}$ is temperature dependent axion mass.
+After the onset of oscillation, the coherent oscillation of the axion field behaves as cold dark matter.
+
+Ref.~\cite{Borsanyi:2016ksw} gives the temperature dependent axion mass as
+\begin{align}
+    m_a^2(T) = m_{a,0}^2 \times \begin{cases}
+        (T/T_c)^{-\gamma} & T>T_c \\
+        1 & T<T_c
+    \end{cases},
+\end{align}
+where $T_c = 2.12 \times \Lambda_{b,0}$, $\Lambda_{b,0} = 75.6~{\rm MeV}$, $\gamma = 8.16$.
+By using $H(T) = \sqrt{\pi^2 g_*(T)/90} T^2/M_{\rm Pl}$, we can estimate $T_{\rm osc}$ as
+\begin{align}
+    T_{\rm osc} \sim 1.0~{\rm GeV} \times \left( \frac{f_a}{10^{12}~{\rm GeV}} \right)^{-0.16} \times \left( \frac{g_*(T_{\rm osc})}{70} \right)^{-0.08}.
+\end{align}
+The axion yield can be estimated as
+\begin{align}
+    Y_a \equiv \frac{n_a}{s}
+    \sim \frac{\rho_a}{m_a s} \biggr|_{T=T_{\rm osc}}
+    \sim \frac{m_a }{s} \biggr|_{T=T_{\rm osc}} \times f_a^2 \theta_i^2,
+\end{align}
+where $s$ is the entropy density of the universe and $\theta_i$ is the initial misalignment angle. Then, we can estimate the axion abundance as
+\begin{align}
+    \Omega_a h^2
+    = \frac{m_{a,0} n_a}{\rho_c/h^2}
+    = \frac{m_{a,0} Y_a s_0}{\rho_c/h^2} 
+\end{align}
+Here $s_0 = 2891.2~{\rm cm^{-3}}$ is the entropy density of the present universe \cite{ParticleDataGroup:2024cfk} and $\rho_c = 3H_0^2 M_{\rm Pl}^2 = h^2 \times 1.05375 \times 10^{-5}~{\rm GeV/cm^3}$ is the critical density of the present universe. Finally, we obtain
+\begin{align}
+    \Omega_a h^2 \sim 0.2 \times \theta_i^2 \left( \frac{f_a}{10^{12}~{\rm GeV}} \right)^{1.16} \left( \frac{g_*(T_{\rm osc})}{70}\right)^{0.58} \left( \frac{g_{*s}(T_{\rm osc})}{70}\right)^{-1}.
+\end{align}
+Thus, assuming $\theta_i \sim {\cal O}(1)$, we can explain the observed dark matter abundance $\Omega_{\rm 
+DM} h^2 \simeq 0.12$ for $f_a \sim 10^{12}~{\rm GeV}$.
+For more details, see, e.g., refs.~\cite{Kawasaki:2013ae,OHare:2024nmr}.
+
+\subsection{The axion quality problem}
+The existence of axion requires the existence of a gauge invariant operator ${\cal O}_d$ charged under the PQ symmetry, which obtains nonzero VEV.
+Then, there is no reason to forbid the existence of higher dimensional operator ${\cal O}_d$ in the Lagrangian as
+\begin{align}
+    {\cal L} \sim \frac{c}{\Lambda^{d-4}} {\cal O}_d.
+\end{align}
+Then, the axion potential is modified as
+\begin{align}
+    V \sim -\chi_{\rm QCD} \cos \frac{a}{f_a} - \frac{\langle {\cal O}_d \rangle}{\Lambda^{d-4}} \cos\left( n \frac{a}{f_a} + \arg c \right),
+\end{align}
+where $n$ is the PQ charge of ${\cal O}_d$.
+This induces nonzero $\bar\theta$ as
+\begin{align}
+    \bar\theta
+    &\sim \frac{1}{\chi_{\rm QCD}(0)} \frac{\langle {\cal O}_d \rangle}{\Lambda^{d-4}}.
+\end{align}
+For $f_a \sim 10^{12}~{\rm GeV}$ and $\Lambda \sim M_{\rm pl} \sim 10^{18}~{\rm GeV}$, $d \gtrsim 13\text{--}14$ is required to satisfy $\bar\theta \lesssim 10^{-10}$.
+This is so-called axion quality problem. For a review see \cite{Reece:2023czb}.
+The possible directions would be
+\begin{itemize}
+    \item large $d$ : composite axion
+    \item non-local ${\cal O}$ : wilson line (or 5th component of gauge field) in 5d model
+\end{itemize}
+
+\subsection{Summary of this section}
+In this section, we have discussed the QCD axion as a solution to the strong CP problem. The QCD axion is a pseudo Nambu-Goldstone boson of the spontaneously broken PQ symmetry, which is anomalous under QCD. The QCD axion absorbs the $\bar\theta$ parameter and its potential minimum, and this is guaranteed by the Vafa-Witten theorem. Depending on the details of the model, the axion can couple to other SM particles, and this gives rich phenomenology. The QCD axion can also be a candidate of dark matter.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Nelson-Barr mechanism}\label{sec:nelson barr}
+Here we discuss Nelson-Barr mechanism, which is another solution to the strong CP problem based on spontaneous CP violation \cite{Nelson:1983zb, Barr:1984qx, Barr:1984fh}. For a review, see, e.g., ref.~\cite{Dine:2015jga}.
+By imposing CP symmetry on the Lagrangian, we can set $\theta=0$. However, we know that the CKM matrix is complex, and thus CP symmetry must be spontaneously broken.
+We need to avoid the generation of $\bar\theta$ from the spontaneous CP violation.
+The following papers are useful to understand this section.
+\begin{itemize}
+\item Dine-Draper \cite{Dine:2015jga}
+\end{itemize}
+
+
+\subsection{BBP model}
+\begin{table}[h]
+\centering
+\begin{tabular}{c|cccc}
+& $SU(3)_C$ & $SU(2)_L$ & $U(1)_Y$ & $Z_2$ \\\hline
+$D_L$ & $3$ & $1$ & $-1/3$ & $-$ \\
+$D_R$ & $3$ & $1$ & $-1/3$ & $-$ \\
+$\Phi$ & $1$ & $1$ & $0$ & $-$ \\
+\end{tabular}
+\caption{Matter content of BBP model.}\label{tab:BBP}
+\end{table}
+%
+The minimal model of Nelson-Barr mechanism is BBP model \cite{Bento:1991ez}. In this model,
+we introduce a vector-like quark $D_{L,R}$ and a complex scalar $\Phi$. $D$ is a $SU(2)_L$ singlet with hypercharge $-1/3$. We impose $Z_2$ symmetry as
+\begin{align}
+    \Phi \to -\Phi, \qquad D_{L,R} \to -D_{L,R},
+\end{align}
+and all of the SM fields are $Z_2$ even. The Lagrangian of this model is given by
+\begin{align}
+    % \mathcal{L} =
+    % -\bar q_L y_u \tilde H u_R
+    % -\mqty(\bar{q}_{L} & \bar{D}_{L}
+    % )\mqty(y_{d}H & 0  \\  \kappa \Phi + \kappa' \Phi^* & M_D  )\mqty(d_{R}\\ D_{R}) + h.c., \label{eq:Lagrangian typeD}
+    \mathcal{L} =
+    -\bar u_R y_u \tilde H^\dagger q_L
+    -\mqty(\bar{d}_{R} & \bar{D}_{R}
+    )\mqty(y_{d} H^\dagger & \kappa \Phi + \kappa' \Phi^* \\  0 & M_D  )\mqty(q_{L}\\ D_{L}) + h.c., \label{eq:Lagrangian typeD}
+\end{align}
+We impose $CP$ symmetry on the Lagrangian, and all of the parameters, i.e., $y_u$, $y_d$, $\kappa$, $\kappa'$, and $M_D$, are real.
+Then, we assume that $\Phi$ obtains a complex VEV as $\langle \Phi \rangle \neq \langle \Phi \rangle^*$.
+
+Let us define
+\begin{align}
+    m_u \equiv y_u \langle H \rangle, \qquad
+    m_d \equiv y_d \langle H \rangle, \qquad
+    B \equiv \kappa \langle\Phi\rangle + \kappa' \langle\Phi\rangle^*, \qquad
+    %{\cal M} = \mqty(m_{d} & 0  \\  B & M_D  ) \label{eq:mass matrix typeD}
+    {\cal M} \equiv \mqty(m_{d} & B \\ 0 & M_D  ) \label{eq:mass matrix typeD}
+\end{align}
+Note that $B$, $\kappa$, and $\kappa'$ are three-component vectors in the flavor space of down-type quarks.
+Then, we can easily see that
+\begin{align}
+    \arg\det m_u = 0, \qquad
+    \arg{\det}{\cal M} = 0.
+\end{align}
+Thus, we obtain 
+\begin{align}
+    \bar\theta = 0
+\end{align}
+at tree level.
+%\cite{Cherchiglia:2020kut}
+
+Let us discuss the CKM matrix in this model.
+The mass matrix of up-type quark is diagonalized as
+\begin{align}
+    %O_{u_L}^T m_u O_{u_R} = \hat m_u.
+    O_{u_R}^T m_u O_{u_L} = \hat m_u.
+\end{align}
+where $O_{u_L}$ and $O_{u_R}$ are real orthogonal matrices.
+The mass matrix of down-type quark is diagonalized as
+\begin{align}
+    % {\cal U}_L^\dagger
+    % {\cal M}
+    % {\cal U}_R = \mqty(\hat m_d & 0 \\ 0 & \hat M_D)
+    {\cal U}_R^\dagger
+    {\cal M}
+    {\cal U}_L = \mqty(\hat m_d & 0 \\ 0 & \hat M_D)
+\end{align}
+%
+From eq.~\eqref{eq:mass matrix typeD}, we obtain
+\begin{align}
+    % {\cal M} {\cal M}^\dagger
+    % =
+    % \mqty(m_d m_d^T & m_d B^\dagger \\  B m_d^T & M_D^2 + B B^\dagger )
+    {\cal M}^\dagger {\cal M}
+    =
+    \mqty(m_d^T m_d & m_d^T B \\  B^\dagger m_d & M_D^2 + B^\dagger B )
+\end{align}
+In the limit of $m_d \ll B, M_D$, the mass eigenvalue of heavy quark is obtained as $\hat M_D \simeq \sqrt{M_D^2 + B^\dagger B}$.
+%
+${\cal U}_L$ is given by
+\begin{align}
+    %{\cal U}_{L} = \mqty(\vb{1}_{3} & m_d B^\dagger / \hat M_D^2 \\  -B m_d^T / \hat M_D^2   &  1) \mqty(U_{d_{L}} &  \\     &   1) + {\cal O}(m_b^2/\hat M_D^2).
+    {\cal U}_{L} = \mqty(\vb{1}_{3} & m_d^T B / \hat M_D^2 \\  -B^\dagger m_d / \hat M_D^2   &  1) \mqty(U_{d_{L}} &  \\     &   1) + {\cal O}(m_b^2/\hat M_D^2).
+\end{align}
+where $U_{d_L}$ is a $3\times 3$ unitary matrix which diagonalizes the mass matrix of down-type quark as
+\begin{align}
+%    U_{d_L}^\dagger \left( m_{d} m_{d}^{T}-\frac{m_{d} B^{\dagger}B m_{d}^T}{\hat M_D^2} \right) U_{d_L} = \hat m_d^2.
+    U_{d_L}^\dagger \left( m_{d}^T m_{d}-\frac{m_{d}^T B B^\dagger m_{d}}{\hat M_D^2} \right) U_{d_L} = \hat m_d^2.
+\end{align}
+%
+The CKM matrix is given by
+\begin{align}
+    V_{\rm CKM} = O_{u_L}^\dagger U_{d_L}.
+\end{align}
+Thus, $V_{\rm CKM}$ can be complex! To obtain ${\cal O}(1)$ complex phase, $|B|$ and $M_D$ should be of the same order.
+
+To summarize, in BBP model, we can obtain $\bar\theta = 0$ at tree level because $m_u$ is real and also $\det{\cal M}$ is real. However, ${\cal M}$ has complex off-diagonal elements! As a result, we obtain a complex CKM matrix from this mass matrix.
+
+\begin{comment}
+\subsection{Phenomenology of Nelson-Barr mechanism}
+\subsubsection{Vector-like quark}
+\cite{Cherchiglia:2021vhe}
+\subsubsection{Domain wall problem}
+$CP$ symmetry is a discrete symmetry. Thus, spontaneous breaking of $CP$ symmetry can lead to the domain wall problem. To avoid this problem, we need to assume that the reheating temperature after inflation is lower than the $CP$ breaking scale.
+\end{comment}
+
+\subsection{Quality problem in Nelson-Barr mechanism}
+We have seen that $\bar\theta=0$ is realized in BBP model at tree level. However, $\bar\theta$ can be generated by radiative corrections. Here we discuss:
+\begin{itemize}
+\item One-loop diagram with Higgs portal coupling
+\item Two-loop `dead duck' diagram
+\item Dimension-5 operators
+\end{itemize}
+For a review, see, e.g., \cite{Dine:2015jga}.
+
+\subsubsection*{One-loop diagram with Higgs portal coupling}
+The following Higgs portal coupling of $\Phi$ is also allowed under $Z_2$ symmetry:
+\begin{align}
+    {\cal L} \ni \lambda \Phi^2 |H|^2 + {\rm h.c.}. \label{eq:phi higgs}
+\end{align}
+This coupling induces one-loop correction to the Yukawa coupling as  \cite{Bento:1991ez,Dine:2015jga}
+\begin{align}
+    %\delta y_{ij} \sim \frac{\lambda y_{ik} \kappa'_{k} \kappa_{j} \langle \Phi \rangle^2  }{16\pi^2 M_\Phi^2}.
+    \delta y_{d,ij} \sim \frac{\lambda y_{d,kj} {\kappa'}^*_{k} \kappa^*_{i} \langle \Phi \rangle^2  }{16\pi^2 M_\Phi^2}.
+\end{align}
+Then, we obtain $\delta \bar\theta$:
+\begin{align}
+    \delta \bar\theta = {\rm Im}{\rm tr}[y_d^{-1} \delta y_d] \sim \frac{\lambda \kappa \kappa' \langle \Phi \rangle^2 }{16\pi^2 M_\Phi^2}.
+\end{align}
+By using $M_D \sim |\kappa| \langle \Phi \rangle$, we obtain the upper bound on $\lambda$ as
+\begin{align}
+    \lambda \lesssim 10^{-8} \times \frac{M_\Phi^2}{M_D^2}. \label{eq:quality higgsportal}
+\end{align}
+Note that a natural value of $\lambda$ is of the order of $\langle H\rangle^2 / \langle\Phi\rangle^2$ to realize $\langle H \rangle \ll \langle\Phi\rangle$ \cite{Bento:1991ez}. Thus, this correction decouples by assuming $\langle H \rangle \ll \langle\Phi\rangle$.
+
+\subsubsection*{Two-loop `dead duck' diagram}
+Non-decoupling effect on $\delta\bar\theta$ comes from the self-interaction of $\Phi$:
+\begin{align}
+    {\cal L} \ni -\gamma \Phi^3 \Phi^* + {\rm h.c.}. \label{eq:phi self}
+\end{align}
+Two-loop `dead duck' diagram \cite{Nelson:1983zb} gives a correction to the mass of vector-like quark:
+\begin{align}
+    \delta M_D \sim M_D \frac{g_s^2 \gamma}{(16\pi^2)^2} \frac{\kappa^2 \langle\Phi\rangle^2}{{\rm max}[M_D^2,M_\Phi^2]}
+\end{align}
+Thus, we obtain $\delta \bar\theta$ as
+\begin{align}
+    \delta\bar\theta = \frac{{\rm Im}[\delta M_D]}{M_D} \sim \frac{g_s^2 \gamma}{(16\pi^2)^2} \frac{\kappa^2 \langle\Phi\rangle^2}{{\rm max}[M_D^2,M_\Phi^2]}.
+\end{align}
+By using $M_D \sim \kappa \langle \Phi \rangle$, we obtain the upper bound on $\gamma$ as
+\begin{align}
+    %\gamma_{abcd} \times {\rm max}\left[ \frac{M_D^2}{M_\Phi^2}, 1 \right] \lesssim 10^{-6}. \label{eq:quality selfcoupling}
+    \gamma \lesssim 10^{-6} \times {\rm max}\left[ \frac{M_\Phi^2}{M_D^2}, 1 \right]. \label{eq:quality selfcoupling}
+\end{align}
+This effect does not decouple in the limit of a large Nelson--Barr scale.
+In general, $\gamma \sim {\cal O}(1)$ and this requires $M_D / M_\Phi \lesssim 10^{-3}$ or equivalently $\kappa \lesssim 10^{-3}$ \cite{Perez:2020dbw}.
+
+\subsubsection*{Dimension-5 operators}
+In addition to radiative corrections, higher dimensional effective interactions suppressed by the cutoff scale of the theory can also induce $\delta\bar\theta$.
+The following dimension-5 effective interactions are allowed by the $Z_2$ symmetry:
+\begin{align}
+    {\cal L} \sim \frac{1}{\Lambda} \Phi^2 \bar D_R D_L + \frac{1}{\Lambda} \Phi \bar D_R H^\dagger q_L, \label{eq:dim5 op}
+\end{align}
+where $\Lambda$ is a cutoff scale of the theory.
+These terms break the structure of the quark mass matrix.
+As a result, we obtain the correction to $\bar\theta$ as \cite{Asadi:2022vys}
+\begin{align}
+    \delta\bar\theta \sim \frac{\langle \Phi \rangle^2}{M_D \Lambda} + \frac{B_{i} (y_d)^{-1}_{ij}  \langle \Phi \rangle}{M_D \Lambda}
+\end{align}
+By using $M_D \sim |\kappa| |\langle\Phi\rangle| = |B|$, we obtain $\delta\bar\theta$ as \begin{align}
+    \delta\bar\theta \sim \frac{\langle \Phi\rangle}{\Lambda}  \times \frac{1}{{\rm min}[y,\kappa]}.
+\end{align}
+By assuming $\Lambda \lesssim M_{\rm pl}$ and $\delta\bar\theta \lesssim 10^{-10}$, we obtain \begin{align}
+    \langle \Phi \rangle \lesssim 10^8~{\rm GeV} \times {\rm min}[y,\kappa]. \label{eq:quality dim5}
+\end{align}
+This gives a severe upper bound on the Nelson--Barr energy scale. See also, refs.~\cite{Dine:2015jga, Perez:2020dbw}.
+
+\subsubsection*{Solutions to the quality problem}
+To solve the strong CP problem by the Nelson--Barr mechanism, we need to suppress the dangerous corrections $\delta\bar\theta$ described so far. Let us briefly summarize the existing proposals to address this problem.
+
+In general, eq.~\eqref{eq:quality selfcoupling} and eq.~\eqref{eq:quality dim5} give severe constraints on Nelson--Barr models \cite{Perez:2020dbw, Asadi:2022vys}.
+First, the constraint in eq.~\eqref{eq:quality dim5} with $y_{u/d} \sim 10^{-5}$ requires $\langle \Phi \rangle \lesssim 10^3~{\rm GeV}$.
+In addition, $\gamma \sim {\cal O}(1)$ with eq.~\eqref{eq:quality selfcoupling} requires $\kappa \lesssim 10^{-3}$ and this leads to $M_D \lesssim 1~{\rm GeV}$! Apparently, this destroys the unitarity of the CKM matrix, and such a light exotic colored particle has not been observed at collider experiments.
+Viable models can be constructed, for example, by assuming an extra symmetry \cite{Perez:2020dbw, Asadi:2022vys, Perez:2023zin, Murai:2024alz}, a five-dimensional model \cite{Girmohanta:2022giy},
+and CP breaking mediation by higher dimensional operators \cite{Valenti:2021xjp, Csaki:2025ikr}.
+
+Supersymmetry (SUSY) is one of the simplest solutions to solve the quality problem. Since the interaction terms in eqs.~\eqref{eq:phi higgs}, \eqref{eq:phi self}, and \eqref{eq:dim5 op} have a non-holomorphic dependence on $\Phi$, their structure can be naturally controlled~\cite{Dine:1993qm}.
+Since additional sources of $\bar\theta$, such as the gluino mass, can appear in SUSY models, gauge mediation is one of the favored SUSY-breaking mediation mechanisms to avoid this issue \cite{Hiller:2001qg, Dine:2015jga, Evans:2020vil, Fujikura:2022sot}.
+
+
+\subsection{Summary of this section}
+In this section, we have discussed the Nelson--Barr mechanism, which is another solution to the strong CP problem based on spontaneous CP violation. In this mechanism, we impose CP symmetry on the Lagrangian and assume that CP symmetry is spontaneously broken. Then, we can obtain $\bar\theta = 0$ at tree level. However, radiative corrections and higher dimensional operators can generate $\bar\theta \neq 0$ in general. This requires more dedicated model building to suppress the dangerous corrections to $\bar\theta$.
+
+\section*{Acknowledgments}
+I am grateful to \texttt{ChatGPT} for careful reading of the manuscript and ${\cal O}(100)$ valuable comments.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+%\section{Fujikawa Method}\label{sec:fujikawa method}
+%\section{Topological charge}\label{sec:topological charge}
+%eq.~\eqref{eq:topological charge}.
+
+\begin{comment}
+\section{Jacobian in the Fujikawa method}
+\label{app:fujikawa-method}
+
+In this appendix, we briefly derive the Jacobian used in 
+Sec.~\ref{sec:c p cp}. 
+We consider QED and the infinitesimal chiral field redefinition
+\begin{align}
+    \psi'(x) = \left(1+i\alpha(x)\gamma_5\right)\psi(x),
+    \qquad
+    \bar\psi'(x) = \bar\psi(x)\left(1+i\alpha(x)\gamma_5\right).
+\end{align}
+The main point of the Fujikawa method is that the path-integral measure is not invariant under this transformation.
+
+Let \(\{\varphi_n(x)\}\) be a complete set of eigenfunctions of the Dirac operator.
+We expand the fermion field as
+\begin{align}
+    \psi(x)=\sum_n a_n \varphi_n(x),
+    \qquad
+    \bar\psi(x)=\sum_n \bar b_n \varphi_n^\dagger(x),
+\end{align}
+where \(a_n\) and \(\bar b_n\) are Grassmann variables. 
+Under the infinitesimal chiral rotation, the coefficients transform as
+\begin{align}
+    a'_n
+    =
+    \sum_m
+    \left[
+        \delta_{nm}
+        +
+        i\int d^4x\,\varphi_n^\dagger(x)\alpha(x)\gamma_5\varphi_m(x)
+    \right]a_m .
+\end{align}
+The same transformation matrix appears for \(\bar b_n\). 
+Since \(a_n,\bar b_n\) are Grassmann variables, the measure transforms with the inverse determinant:
+\begin{align}
+    {\cal D}\psi'{\cal D}\bar\psi'
+    =
+    {\cal D}\psi{\cal D}\bar\psi\,
+    \exp\left[
+        -2i\,{\rm Tr}\left(\alpha\gamma_5\right)
+    \right].
+\end{align}
+Here the trace is over spacetime, spinor indices, and the basis of eigenfunctions. 
+This trace is ill-defined and must be regularized. We use the gauge-invariant heat-kernel regulator,
+\begin{align}
+    {\rm Tr}\left(\alpha\gamma_5\right)
+    \to
+    \lim_{M\to\infty}
+    {\rm Tr}\left[
+        \alpha\gamma_5
+        \exp\left(
+            -\frac{\slashed D^2}{M^2}
+        \right)
+    \right].
+\end{align}
+The standard heat-kernel computation gives, with the convention used in the main text,
+\begin{align}
+    \lim_{M\to\infty}
+    {\rm tr}\left[
+        \gamma_5
+        \exp\left(
+            -\frac{\slashed D^2}{M^2}
+        \right)
+    \right]_{x,x}
+    =
+    -\frac{e^2}{16\pi^2}
+    F_{\mu\nu}\tilde F^{\mu\nu},
+\end{align}
+where \({\rm tr}\) denotes the trace over spinor indices. Therefore,
+\begin{align}
+    -2i\,{\rm Tr}\left(\alpha\gamma_5\right)
+    =
+    i\int d^4x\,
+    \alpha(x)
+    \frac{e^2}{8\pi^2}
+    F_{\mu\nu}\tilde F^{\mu\nu}.
+\end{align}
+Thus, the measure transforms as
+\begin{align}
+    {\cal D}\psi'{\cal D}\bar\psi'
+    =
+    {\cal D}\psi{\cal D}\bar\psi
+    \exp\left[
+        i\int d^4x\,
+        \alpha(x)
+        \frac{e^2}{8\pi^2}
+        F_{\mu\nu}\tilde F^{\mu\nu}
+    \right].
+\end{align}
+This is the result used in Sec.~\ref{sec:c p cp}.
+\end{comment}
+
+\begin{comment}
+\section{Topological charge and winding number}
+\label{app:topological-charge}
+
+In this appendix, we briefly explain why the quantity in 
+eq.~\eqref{eq:topological charge} is an integer. 
+For finite Euclidean action, the field strength must vanish at spatial infinity,
+\begin{align}
+    F_{ij}\to 0
+    \qquad
+    (|x|\to\infty).
+\end{align}
+Therefore, the gauge field approaches a pure gauge configuration,
+\begin{align}
+    A_i
+    \to
+    \frac{i}{g}U\partial_i U^\dagger ,
+\end{align}
+where \(U(x)\in SU(2)\). 
+The boundary at infinity of four-dimensional Euclidean spacetime is \(S^3_\infty\). 
+Thus, the asymptotic gauge transformation defines a map
+\begin{align}
+    U:S^3_\infty \to SU(2).
+\end{align}
+Since \(SU(2)\simeq S^3\), such maps are classified by
+\begin{align}
+    \pi_3(SU(2))=\mathbb{Z}.
+\end{align}
+The integer is the winding number of the map \(U\).
+
+The winding number can be written explicitly as
+\begin{align}
+    n[U]
+    =
+    \frac{1}{24\pi^2}
+    \int_{S^3_\infty}
+    dS_\mu\,
+    \epsilon^{\mu\nu\rho\sigma}
+    {\rm tr}\left[
+        (U\partial_\nu U^\dagger)
+        (U\partial_\rho U^\dagger)
+        (U\partial_\sigma U^\dagger)
+    \right].
+\end{align}
+This is the pullback of the normalized volume form on \(SU(2)\simeq S^3\). 
+To see this more explicitly, we parametrize an element of \(SU(2)\) as
+\begin{align}
+    U = y_0{\bf 1}+i y_a\sigma^a,
+    \qquad
+    y_0^2+y_a y_a=1.
+\end{align}
+The four real variables \(y_A=(y_0,y_a)\) describe a unit three-sphere. 
+With an appropriate orientation convention, one can show
+\begin{align}
+    \frac{1}{24\pi^2}
+    {\rm tr}\left[
+        (U dU^\dagger)^3
+    \right]
+    =
+    \frac{1}{2\pi^2}
+    \omega_{S^3},
+\end{align}
+where \(\omega_{S^3}\) is the volume form on the unit \(S^3\), normalized so that
+\begin{align}
+    \int_{S^3}\omega_{S^3}=2\pi^2.
+\end{align}
+Therefore, if \(U\) wraps the boundary \(S^3_\infty\) around the group manifold \(SU(2)\simeq S^3\) \(n\) times, the integral gives
+\begin{align}
+    n[U]\in\mathbb{Z}.
+\end{align}
+This integer is the topological charge of the gauge-field configuration. 
+In particular,
+\begin{align}
+    \frac{g^2}{32\pi^2}
+    \int d^4x_E\,F_{ij}^a\tilde F_{ij}^a
+    =
+    n\in\mathbb{Z}.
+\end{align}
+\end{comment}
+
+\section{$\eta'$ mass in large $N_c$ QCD: Witten-Veneziano relation}\label{sec:etaprime large N}
+In the large $N_c$ limit, the relation between the $U(1)_A$ problem and the topological susceptibility becomes transparent \cite{Witten:1979vv, Veneziano:1979ec}.
+The topological susceptibility $\chi(0)$ can be expanded in $1/N_c$ as
+\begin{align}
+    \chi(q^2) = \chi_{\rm YM}(q^2) + \frac{N_f}{N_c} \chi_q(q^2) + {\cal O}(N_c^{-2}).
+\end{align}
+Here $\chi_{\rm YM}(q^2)$ is the pure gluonic contribution, which is the same as pure $SU(N_c)$ Yang-Mills theory. $\chi_q(q^2)$ is the contribution from quark loops.
+In chiral limit ($m_q=0$), $\chi(0)=0$ should be satisfied. However, gluonic contribution starts from ${\cal O}(N_c^0)$, and quark contribution starts from ${\cal O}(N_c^{-1})$. How can $\chi(0)=0$ be satisfied? 
+
+Witten and Veneziano \cite{Witten:1979vv, Veneziano:1979ec} pointed out that this puzzle can be resolved if $\chi_q(q^2)$ has a pole as
+\begin{align}
+    \chi_q(q^2) = \frac{a^2}{q^2 - m_{\eta'}^2},
+\end{align}
+and $m_{\eta'}^2 \propto 1/N_c$. By using $\chi(0)=0$, we obtain
+\begin{align}
+    m_{\eta'}^2 = \frac{N_f}{N_c} \frac{a^2}{\chi_{\rm YM}(0)}.
+\end{align}
+Then,
+\begin{align}
+    a = \sqrt{ \frac{N_c}{N_f} } \times \langle 0| \frac{g_s^2}{32\pi^2} G^a_{\mu\nu} \tilde G^{a\mu\nu} |\eta'\rangle = \sqrt{ \frac{N_c}{N_f} } \frac{1}{2N_f} \langle 0 | \partial_\mu J_A^\mu |\eta' \rangle = \sqrt{ \frac{N_c}{N_f} } \frac{1}{2N_f} \sqrt{2N_f} f m_{\eta'}^2
+\end{align}
+Then, we obtain \cite{Witten:1979vv, Veneziano:1979ec}
+\begin{align}
+    m_{\eta'}^2
+     = \frac{1}{2N_f} \frac{f^2 m_{\eta'}^4}{\chi_{\rm YM}(0)}
+     = \frac{2N_f}{f^2} \chi_{\rm YM}(0).
+\end{align}
+
+\subsection{Topological susceptibility in chiral Lagrangian}
+Finally, let us derive $\chi(0)$ from the chiral Lagrangian.
+\begin{align}
+    V = -f_\pi^2 B_0 \sum_q m_q \cos(\theta_q + \varphi_q) + \frac{1}{2} \chi_{\rm YM} \left( \sum_q \varphi_q \right)^2
+\end{align}
+
+\begin{align}
+    \chi = \left( \frac{1}{\chi_{\rm YM}} + \frac{1}{f_\pi^2 B_0 m_*}  \right)^{-1}
+\end{align}
+
+Adding this effect into the chiral Lagrangian, we obtain the following mass relation :
+\begin{align}
+    m_{\eta'}^2 = \frac{6}{f_\pi^2} \chi_{\rm YM} + 2m_K^2 - m_\eta^2.
+\end{align}
+See, e.g., ref.~\cite{Gabadadze:2002ff}. Thus, nonzero topological susceptibility is closely connected to the mass of $\eta'$!
+
+
+
+\subsection{Note on Coleman's textbook}
+Coleman \cite{Coleman:1978ae} says ``\textit{I emphasize that there is no connection between the eta and the U(1) problem. The eta is a red herring; it is just another hadron; it is no more a relic of a U(1) Goldstone boson than is the N**.}'' But this lecture note is written in 1977. Witten and Veneziano's papers are published in 1979. So, at the time of writing this textbook, the connection between $\eta'$ and $U(1)_A$ problem was not clear yet. After Witten and Veneziano's papers, it becomes clear that $\eta'$ is closely connected to $U(1)_A$ problem.
+
+
+
+\section{Radiative correction of $\bar\theta$ in the Standard Model}
+Suppose that $\bar\theta = 0$ at some high energy scale. Can this explain the smallness of neutron EDM? To discuss this, we need to discuss the running of $\bar\theta$ and finite correction to $\bar\theta$.
+
+\subsection{Running of $\bar\theta$}
+Let us discuss the running of $\arg\det y_u y_d$ \cite{Ellis:1978hq}.
+%$L$-loop diagram can contribute as
+Loop diagram contribution is given as
+\begin{align}
+{\rm Im}\left[ {\rm tr}\left(  \prod_{i=1}^k m_u^{2n_i} V_{\rm CKM} m_d^{2m_i} V_{\rm CKM}^\dagger \right)\right].%, \qquad
+%\sum_{i=1}^k (n_i + m_i + 1) = L.
+\end{align}
+For Hermitian matrices $A$ and $B$, ${\rm Im}[{\rm tr}(AB)] = 0$. 
+
+Thus, for $k=1$,
+\begin{align}
+{\rm Im}\left[ {\rm tr}\left(  m_u^{2n_1} V_{\rm CKM} m_d^{2m_1} V_{\rm CKM}^\dagger \right)\right] = 0,
+\end{align}
+and there is no contributions.
+
+For $k=2$, we obtain
+\begin{align}
+{\rm Im}\left[ {\rm tr}\left( m_u^{2} V_{\rm CKM} m_d^{2} V_{\rm CKM}^\dagger m_u^{2} V_{\rm CKM} m_d^{2} V_{\rm CKM}^\dagger \right)\right] &= 0, \\
+{\rm Im}\left[ {\rm tr}\left( m_u^{4} V_{\rm CKM} m_d^{2} V_{\rm CKM}^\dagger m_u^{2} V_{\rm CKM} m_d^{2} V_{\rm CKM}^\dagger \right)\right] &= 0, \\
+{\rm Im}\left[ {\rm tr}\left( m_u^{2} V_{\rm CKM} m_d^{4} V_{\rm CKM}^\dagger m_u^{2} V_{\rm CKM} m_d^{2} V_{\rm CKM}^\dagger \right)\right] &= 0,
+\end{align}
+and, at the leading order, we obtain nonzero contribution as
+\begin{align}
+{\rm Im}\left[ {\rm tr}\left( m_u^{4} V_{\rm CKM} m_d^{4} V_{\rm CKM}^\dagger m_u^{2} V_{\rm CKM} m_d^{2} V_{\rm CKM}^\dagger \right)\right] \simeq m_t^4 m_b^4 m_c^2 m_s^2 J.% \sim 10^{-13}~{\rm GeV}^{12},
+\end{align}
+This corredponds to 7-loop diagram \cite{Ellis:1978hq}.
+
+\subsection{Finite correction to $\bar\theta$}
+\S 2.2 in \cite{Dar:2000tn}, \S 4.1 in \cite{Pospelov:2005pr}.
+
+One-loop strong penguin diagram gives CP violating four quark operator. One-loop pion loop (two-loop in total) diagram with this operator gives leading contribution to $d_n$ as \cite{Gavela:1981sk, Khriplovich:1981ca, McKellar:1987tf}
+\begin{align}
+    d_n \sim 10^{-32}~e~{\rm cm},
+\end{align}
+
+
+\section{Miscellaneous}
+
+\subsection{Anthropic principle?}
+The strong CP problem is a naturalness problem. For a review of naturalness, see, e.g., \cite{Craig:2022eqo}. There is severe naturalness problems in the Standard Model, such as
+\begin{itemize}
+\item electroweak hierarchy problem
+\item cosmological constant problem
+\end{itemize}
+Should we really care about the smallness of $\bar\theta$?
+One of specific feature of the strong CP problem is that it is very difficult to solve this problem by anthropic principle. 
+How nonzero $\bar\theta \gtrsim 10^{-10}$ could affect the life? There have been some attempts but it is not clear the strong CP problem can be solved by the anthropic principle \cite{Ubaldi:2008nf, Dine:2018glh}.
+
+\subsection{Solution within QCD?}
+There have been several trials to solve the strong CP problem \textit{within} QCD. For recent trials, see, for example, \cite{Ai:2020ptm, Ai:2024vfa, Ai:2024cnp, Ai:2025quf}, 
+\cite{Yamanaka:2022vdt, Yamanaka:2022bfj, Yamanaka:2024nzn}, 
+\cite{Nakamura:2021meh, Schierholz:2024var, Schierholz:2025tns}, 
+\cite{Strocchi:2024tis}.
+
+However, this direction is extremely difficult. As we have seen, the strong CP problem is closely conntected to $U(1)_A$ problem \cite{Shifman:1979if, Gabadadze:2002ff}. See also \cite{Cohen:2018cyj} \cite{Ringwald:2026apz}.
+
+%\subsection{Three form interpretation}
+%\cite{Dvali:2005an}
+
+\bibliography{ref}
+%\bibliographystyle{utphys}
+\bibliographystyle{JHEP}
+\end{document}
