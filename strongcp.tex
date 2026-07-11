@@ -76,14 +76,36 @@ There are two natural candidates of such a symmetry:
 \item Parity symmetry ($P$) : $(t,\vec x) \to (t,-\vec x)$
 \item Time reversal symmetry ($T$) : $(t,\vec x) \to (-t,\vec x)$
 \end{itemize}
-The scalar potential $\phi$ and vector potential $\vec A$ forms a four-vector $A^\mu = (\phi, \vec A)$. $\vec E$ and $\vec B$ are written in terms of $A^\mu$ as
+Let us see how $\vec E$ and $\vec B$ should behave under $P$ and $T$ transformation from Maxwell equations:
+\begin{align}
+    \vec\nabla \cdot \vec B = 0, \qquad
+    \vec\nabla \times \vec E + \frac{\partial}{\partial t}\vec B = \vec 0, \\
+    \vec\nabla \cdot \vec E = \rho, \qquad
+    \vec\nabla \times \vec B - \frac{\partial}{\partial t}\vec E = \vec j.
+\end{align}
+$P$ and $T$ transformation for $\rho$ and $\vec j$ is
+\begin{align}
+    P :&\qquad \rho(t,\vec x) \to \rho(t,-\vec x), \qquad
+    \vec j(t,\vec x) \to -\vec j(t,-\vec x), \\
+    T :&\qquad \rho(t,\vec x) \to \rho(-t,\vec x), \qquad
+    \vec j(t,\vec x) \to -\vec j(-t,\vec x).
+\end{align}
+Thus, $\vec E$ and $\vec B$ behaves as
+\begin{align}
+    P :&\qquad \vec E(t,\vec x) \to -\vec E(t,-\vec x), \qquad
+    \vec B(t,\vec x) \to \vec B(t,-\vec x), \\
+    T :&\qquad \vec E(t,\vec x) \to \vec E(-t,\vec x), \qquad
+    \vec B(t,\vec x) \to -\vec B(-t,\vec x).
+\end{align}
+Thus, under $P$, $\vec E$ is odd and $\vec B$ is even. Under $T$, $\vec E$ is even and $\vec B$ is odd.\footnote{
+Note that the scalar potential $\phi$ and vector potential $\vec A$ forms a four-vector $A^\mu = (\phi, \vec A)$. $\vec E$ and $\vec B$ are written in terms of $A^\mu$ as
 \begin{align}
     \vec E &= -\vec\nabla \phi - \partial_t \vec A
     = (-F^{01}, -F^{02}, -F^{03}),\\
     \vec B &= \vec\nabla \times \vec A
-    = (-F^{23}, -F^{31}, -F^{12}).
+    = (-F^{23}, -F^{31}, -F^{12}),
 \end{align}
-Then, under $P$, $\vec E$ is odd and $\vec B$ is even. Under $T$, $\vec E$ is even and $\vec B$ is odd.
+where $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$. From Maxwell equation $\partial_\mu F^{\mu\nu} = j^\nu$, we can observe that $A_\mu$ and $j_\mu$ should behave in the same way under $P$ and $T$ transformation, i.e., $A_0 \to A_0$ and $A_i \to -A_i$.}
 The behavior of $\vec s$ is same as the angular momentum, so it is even for $P$ and odd for $T$.
 See table \ref{tab:E, B, s and P and T}.
 
@@ -337,7 +359,8 @@ Thus, there is no configuration in QED to make ${\cal L}_\theta$ relevant.
 (The existence of a monopole can be a loop hole of this argument. $\theta$ can have a physical effect in the presence of the monopoles \cite{Witten:1979ey, Fan:2021ntg}.)
 
 
-To summarize, the most general renormalizable Lagrangian of QED automatically preserves $C$, $P$, and $CP$, i.e., they are accidental symmetries.
+To summarize, the most general renormalizable Lagrangian of QED automatically preserves $C$, $P$, and $CP$ because $(e^2 \theta/16\pi^2) F_{\mu\nu}\tilde F^{\mu\nu}$ term cannot have physical effect in QED.
+In this sense, $C$, $P$, $CP$ are accidental symmetries in QED.
 
 
 \subsection{QCD}
@@ -452,7 +475,7 @@ We can define the following variable which is independent of the chiral phase ro
 
 \subsection{Summary of this section}
 In this section, we wrote down the most generic renormalizable Lagrangian of QED and QCD. We found that $\theta$ term can be written in generic Lagrangian. However, $\theta$ term is total derivative, and we need more detailed discussion on its physical implications. 
-In the next section, we will discuss non-perturbative effect which is relevant to $\theta$ term.
+As we will see in the next section, in non-abelian gauge theories, there is a non-perturbative contribution to make $\theta$ term relevant.
 
 
 
@@ -995,6 +1018,7 @@ Let us minimize $V$ with respect to $\varphi_q$ under the constraint $\sum_q \va
     \frac{\partial V}{\partial \varphi_q} - \lambda
     = f_\pi^2 B_0 m_q \sin(\theta_q + \varphi_q) - \lambda = 0.
 \end{align}
+This is the Dashen-Nuyts equation.
 By assuming $\varphi_q,~\theta_q \ll 1$, we obtain
 \begin{align}
     \varphi_q = -\theta_q + \frac{\lambda}{f_\pi^2 B_0 m_q}.
@@ -1133,10 +1157,11 @@ $c_+$ is determined by comparing three-flavor chiral Lagrangian with the observe
 $d_n$ can be evaluated by the one-loop diagram with charged pion loop. In particular, the chiral log contribution is given by
 \begin{align}
     d_n
-    \sim \frac{e}{16\pi^2} \frac{m_* \bar\theta c_+}{f_\pi} \frac{g_A m_N}{f_\pi} \frac{1}{m_N} \log\frac{m_N}{m_\pi}
+    \sim \frac{e}{16\pi^2} \frac{m_* \bar\theta c_+}{f_\pi} \frac{g_A m_N}{f_\pi} \frac{1}{m_N} \log\frac{\Lambda}{m_\pi}
     \sim e\bar\theta \times \frac{c_+ g_A m_*}{(4\pi f_\pi)^2} \log\frac{m_N}{m_\pi}
-    \sim \bar\theta \times 10^{-16} ~e~{\rm cm}.
+    \sim \bar\theta \times 10^{-16} ~e~{\rm cm},
 \end{align}
+where $\Lambda \sim 1~{\rm GeV}$.
 Note that $d_n$ contains an unknown counterterm. So we should understand that this estimation has ${\cal O}(1)$ uncertainty.
 
 
