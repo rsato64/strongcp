@@ -217,7 +217,7 @@ Here we have used $(\gamma^\mu)^T = \gamma^2 \gamma^0 \gamma^\mu \gamma^0 \gamma
 The $T$ transformation is defined as
 \begin{align}
     \psi(t,\vec x) \to -\gamma^1 \gamma^3 \psi(-t, \vec x), \\
-    A_\mu(t,\vec x) \to T_{\mu}^{\,\nu} A_\nu(-t, \vec x),
+    A_\mu(t,\vec x) \to -T_{\mu}^{\,\nu} A_\nu(-t, \vec x),
 \end{align}
 where $T_{\mu}^{\,\nu} = {\rm diag}(-1, 1, 1, 1)$.
 Then, $\psi$ is transformed as
@@ -784,7 +784,7 @@ Hadrons such as proton, neutron, pion, etc are understood as bound state of quar
 \end{align}
 
 \subsubsection{Chiral symmetry}
-In the massless limit, the Lagrangian is invariant under $U(3)_L \times U(3)_R$ chiral symmetry as
+In the massless quark limit, the QCD Lagrangian is invariant under $U(3)_L \times U(3)_R$ chiral symmetry as
 \begin{align}
 \left(\begin{array}{c} u_L \\ d_L \\ s_L \end{array}\right) \to 
 U_L \left(\begin{array}{c} u_L \\ d_L \\ s_L \end{array}\right), \qquad
@@ -793,7 +793,7 @@ U_R \left(\begin{array}{c} u_R \\ d_R \\ s_R \end{array}\right), \label{eq:chira
 \end{align}
 where $U_L$ and $U_R$ are $3\times 3$ unitary matrices. Thus, the kinetic term respects the following global symmetry:
 \begin{align}
-    U(3)_L \times U(3)_R \simeq SU(3)_L \times SU(3)_R \times U(1)_V \times U(1)_A.
+    U(3)_L \times U(3)_R \simeq SU(3)_L \times SU(3)_R \times U(1)_V \times U(1)_A. \label{eq:chiral symmetry}
 \end{align}
 It is known that the quark bilinear condensate is formed in the vacuum as
 \begin{align}
@@ -803,9 +803,10 @@ It is known that the quark bilinear condensate is formed in the vacuum as
 \end{align}
 Thus, the chiral symmetry is spontaneously broken, and the unbroken symmetry in the vacuum is a diagonal subgroup of $U(3)_L \times U(3)_R$ as
 \begin{align}
-    U(3)_V = SU(3)_V \times U(1)_V.
+    U(3)_V = SU(3)_V \times U(1)_V. \label{eq:unbroken symmetry}
 \end{align}
-$\pi$, $K$, and $\eta$ mesons are understood as NG bosons corresponding to the broken generators of $SU(3)_L \times SU(3)_R \to SU(3)_V$.
+Comparing eqs.~\eqref{eq:chiral symmetry} and \eqref{eq:unbroken symmetry}, we can see that the number of broken generators is 9. Thus, we expect 9 massless NG bosons in the massless quark limit. According to the Nambu--Goldstone theorem, there should be 9 massless NG bosons corresponding to these broken generators.
+Indeed, $\pi^0$, $\pi^+$, $\pi^-$, $K^+$, $K^-$, $K^0$, $\bar K^0$, and $\eta$ mesons are understood as NG bosons corresponding to the 8 broken generators of $SU(3)_L \times SU(3)_R \to SU(3)_V$. How about the remaining one, i.e., $U(1)_A$ symmetry?
 
 \subsubsection{$U(1)_A$ violation in instanton background}
 For $U(1)_A$ symmetry, there is a source of explicit $U(1)_A$ violation in addition to spontaneous symmetry breaking by quark bilinear condensate.
